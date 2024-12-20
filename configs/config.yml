@@ -1,1 +1,9 @@
 port: "4000"
+
+db:
+  username: "speeddem0n"
+  password: "1Q2b3c4a"
+  host: "localhost"
+  port: "5436"
+  dbname: "todoapp"
+  sslmode: disable
