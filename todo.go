@@ -1,6 +1,6 @@
 package todo
 
-type Todo struct { // Структура для Списка дел
+type Todo struct { // Структура для Списка Задач "todo"
 	Id          int    `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
@@ -12,7 +12,7 @@ type UserList struct { // Структура для списка пользов�
 	ListId int
 }
 
-type TodoItem struct { // Структура для Todo
+type TodoItem struct { // Структура для Задач "todo"
 	Id          int    `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`

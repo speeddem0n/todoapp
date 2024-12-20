@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin" // используется gin вместо стандартого net/http
 	"github.com/speeddem0n/todoapp/pkg/service"
 )
 
@@ -16,13 +16,13 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New() // Инициализация роутера
 
-	auth := router.Group("/auth")
+	auth := router.Group("/auth") // Группа авторизации
 	{
 		auth.POST("/sing-up", h.singUp)
 		auth.POST("/sing-in", h.singIn)
 	}
 
-	api := router.Group("/api")
+	api := router.Group("/api") // Группа API
 	{
 		lists := api.Group("/lists")
 		{

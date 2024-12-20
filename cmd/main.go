@@ -4,13 +4,13 @@ import (
 	"log"
 	"os"
 
-	"github.com/joho/godotenv"
+	"github.com/joho/godotenv" // godotenv для работы с .env файлами
 	_ "github.com/lib/pq"
 	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/pkg/handler"
 	"github.com/speeddem0n/todoapp/pkg/repository"
 	"github.com/speeddem0n/todoapp/pkg/service"
-	"github.com/spf13/viper"
+	"github.com/spf13/viper" // viper для работы с config файлами
 )
 
 func main() {
