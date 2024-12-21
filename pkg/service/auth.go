@@ -11,8 +11,9 @@ import (
 )
 
 const (
-	salt     = "asd2gewvqwef234rtf" // Случайная соль для пароля
-	tokenTTL = 12 * time.Hour
+	salt       = "asd2gewvqwef234rtf" // Случайная соль для пароля
+	tokenTTL   = 12 * time.Hour
+	signingKey = "qweg1q2egqewf#fqvcq"
 )
 
 type tokenClaims struct { // структура tokenClaims для послудующей передачи в NewWithClaims в методе GenerateToken
@@ -34,7 +35,7 @@ func (s *AuthService) CreateUser(user todo.User) (int, error) { // Метод Cr
 	return s.repo.CreateUser(user)
 }
 
-func (s *AuthService) GenerateToken(username, password string) (string, error) {
+func (s *AuthService) GenerateToken(username, password string) (string, error) { // Метод для генерации JWT токена
 	user, err := s.repo.GetUser(username, generatePasswordHash(password)) // Используем метод Get user из repo
 	if err != nil {
 		return "", err
@@ -47,8 +48,7 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 		},
 		user.Id,
 	})
-
-	return token.SigningString() // Generate the signing string
+	return token.SignedString(signingKey) // Generate the signing string
 }
 
 func generatePasswordHash(password string) string { // Функция для генерации Хэша пароля
