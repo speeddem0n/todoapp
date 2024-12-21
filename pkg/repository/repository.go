@@ -14,7 +14,8 @@ const ( // Константы с названием таблиц из БД
 )
 
 type Authorization interface {
-	CreateUser(user todo.User) (int, error)
+	CreateUser(user todo.User) (int, error)               // Метод CreateUser для создания пользователя
+	GetUser(username, password string) (todo.User, error) // Метод GetUser для поулчения id пользоваетя
 }
 
 type TodoList interface {
