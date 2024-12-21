@@ -24,13 +24,13 @@ func main() {
 		log.Fatalf("error loading env variables: %s", err.Error())
 	}
 
-	db, err := repository.NewPostgresDB(repository.Config{
+	db, err := repository.NewPostgresDB(repository.Config{ // Инициализируем новое подключение к базе данных и передаем в него параметры из конфига с помощью viper
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
 		Username: viper.GetString("db.username"),
 		DBName:   viper.GetString("db.dbname"),
 		SSLMode:  viper.GetString("db.sslmode"),
-		Password: os.Getenv("DB_PASSWORD"),
+		Password: os.Getenv("DB_PASSWORD"), // Передаем пароль из .env с помощью godotenv
 	})
 	if err != nil {
 		log.Fatalf("failed to initialize db: %s", err.Error())
