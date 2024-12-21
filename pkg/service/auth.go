@@ -48,7 +48,7 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 		},
 		user.Id,
 	})
-	return token.SignedString(signingKey) // Generate the signing string
+	return token.SignedString([]byte(signingKey)) // Generate the signing string
 }
 
 func generatePasswordHash(password string) string { // Функция для генерации Хэша пароля
