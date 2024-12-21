@@ -25,3 +25,11 @@ func (r *AuthPostgres) CreateUser(user todo.User) (int, error) { // Метод �
 	}
 	return id, nil
 }
+
+func (r *AuthPostgres) GetUser(username, password string) (todo.User, error) { // Метод для пролучения пользователя из БД по его username и password
+	var user todo.User                                                                           // Структура пользователя
+	query := fmt.Sprintf("SELECT id FROM %s WHERE username=$1 and password_hash=$2", usersTable) // SQL запрос
+	err := r.db.Get(&user, query, username, password)                                            // Методом гет записываем в структуру пользователя результат SQL запроса
+
+	return user, err // возвращаем структуру пользователя и ошибку
+}
