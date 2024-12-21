@@ -1,8 +1,13 @@
 package service
 
-import "github.com/speeddem0n/todoapp/pkg/repository"
+import (
+	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/pkg/repository"
+)
 
-type Autorization interface {
+type Authorization interface { // service Authorization
+	CreateUser(user todo.User) (int, error)
+	GenerateToken(username, password string) (string, error)
 }
 
 type TodoList interface {
@@ -12,11 +17,13 @@ type TodoItem interface {
 }
 
 type Service struct {
-	Autorization
+	Authorization
 	TodoList
 	TodoItem
 }
 
 func NewService(repos *repository.Repository) *Service { // Конструктор для структуры Service, принимает указатьль на структуры Repository что бы обратится к БД
-	return &Service{}
+	return &Service{
+		Authorization: NewAuthService(repos.Authorization),
+	}
 }

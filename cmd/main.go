@@ -1,11 +1,11 @@
 package main
 
 import (
-	"log"
 	"os"
 
-	"github.com/joho/godotenv" // godotenv для работы с .env файлами
-	_ "github.com/lib/pq"
+	"github.com/joho/godotenv"   // godotenv для работы с .env файлами
+	_ "github.com/lib/pq"        // драйвер для работы с БД
+	"github.com/sirupsen/logrus" // Сторонний логер для логирования
 	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/pkg/handler"
 	"github.com/speeddem0n/todoapp/pkg/repository"
@@ -14,14 +14,16 @@ import (
 )
 
 func main() {
-	err := intConfig()
+	logrus.SetFormatter(new(logrus.JSONFormatter)) // Задаем для логера формат json
+
+	err := intConfig() // Инициализируем конфиг функцией intConfig()
 	if err != nil {
-		log.Fatalf("error initialization config: %s", err.Error())
+		logrus.Fatalf("error initialization config: %s", err.Error())
 	}
 
-	err = godotenv.Load()
+	err = godotenv.Load() // Загружаем .env файл с паролем к бд
 	if err != nil {
-		log.Fatalf("error loading env variables: %s", err.Error())
+		logrus.Fatalf("error loading env variables: %s", err.Error())
 	}
 
 	db, err := repository.NewPostgresDB(repository.Config{ // Инициализируем новое подключение к базе данных и передаем в него параметры из конфига с помощью viper
@@ -33,20 +35,19 @@ func main() {
 		Password: os.Getenv("DB_PASSWORD"), // Передаем пароль из .env с помощью godotenv
 	})
 	if err != nil {
-		log.Fatalf("failed to initialize db: %s", err.Error())
+		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
 
 	repos := repository.NewRepository(db)    // Ицициализируем структуру БД
 	services := service.NewService(repos)    // Инициализируем структуру сервисов и передаем в нее структуру БД
 	handlers := handler.NewHandler(services) // Инициализируем структуру обработчиков и передаем в нее структуру сервисов
 
-	srv := new(todo.Server) // Инициализируеми структуру сервера
-	port := "4000"
-	err = srv.Run(viper.GetString(port), handlers.InitRoutes()) // viper.GetString(port) получает значения port из config. Запускаем сервер на указаном порте.
+	srv := new(todo.Server)                                       // Инициализируеми структуру сервера
+	err = srv.Run(viper.GetString("port"), handlers.InitRoutes()) // viper.GetString(port) получает значения port из config. Запускаем сервер на указаном порте.
 	if err != nil {
-		log.Fatalf("Ошибка во времая запуска серевера: %s", err.Error()) // Обработка ошибки запуска сервера
+		logrus.Fatalf("Ошибка во времая запуска серевера: %s", err.Error()) // Обработка ошибки запуска сервера
 	}
-	log.Printf("Сервер запущен по адресу: :%s", port)
+
 }
 
 func intConfig() error { // Функция для инициализации конфига
