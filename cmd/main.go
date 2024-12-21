@@ -42,13 +42,12 @@ func main() {
 	services := service.NewService(repos)    // Инициализируем структуру сервисов и передаем в нее структуру БД
 	handlers := handler.NewHandler(services) // Инициализируем структуру обработчиков и передаем в нее структуру сервисов
 
-	srv := new(todo.Server) // Инициализируеми структуру сервера
-	port := "4000"
-	err = srv.Run(viper.GetString(port), handlers.InitRoutes()) // viper.GetString(port) получает значения port из config. Запускаем сервер на указаном порте.
+	srv := new(todo.Server)                                       // Инициализируеми структуру сервера
+	err = srv.Run(viper.GetString("port"), handlers.InitRoutes()) // viper.GetString(port) получает значения port из config. Запускаем сервер на указаном порте.
 	if err != nil {
 		logrus.Fatalf("Ошибка во времая запуска серевера: %s", err.Error()) // Обработка ошибки запуска сервера
 	}
-	logrus.Printf("Сервер запущен по адресу: :%s", port)
+
 }
 
 func intConfig() error { // Функция для инициализации конфига
