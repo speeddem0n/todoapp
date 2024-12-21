@@ -11,7 +11,7 @@ type AuthPostgres struct {
 	db *sqlx.DB
 }
 
-func NewAuthPostgres(db *sqlx.DB) *AuthPostgres {
+func NewAuthPostgres(db *sqlx.DB) *AuthPostgres { // инициалицируем новую структуру AuthPostgres которая принимает подключение в БД
 	return &AuthPostgres{db: db}
 }
 
