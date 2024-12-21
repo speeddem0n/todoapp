@@ -5,7 +5,7 @@ import (
 	"github.com/speeddem0n/todoapp/pkg/repository"
 )
 
-type Authorization interface {
+type Authorization interface { // service Authorization
 	CreateUser(user todo.User) (int, error)
 	GenerateToken(username, password string) (string, error)
 }
