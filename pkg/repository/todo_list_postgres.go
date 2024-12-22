@@ -1,0 +1,41 @@
+package repository
+
+import (
+	"fmt"
+
+	"github.com/jmoiron/sqlx"
+	todo "github.com/speeddem0n/todoapp"
+)
+
+type TodoListPostgres struct {
+	db *sqlx.DB
+}
+
+func NewTodoListPostgres(db *sqlx.DB) *TodoListPostgres { // инициалицируем новую структуру AuthPostgres которая принимает подключение в БД
+	return &TodoListPostgres{db: db}
+}
+
+func (r *TodoListPostgres) Create(userId int, list todo.TodoList) (int, error) {
+	tx, err := r.db.Begin() // Begin() начинает sql транзакцию
+	if err != nil {
+		return 0, err
+	}
+
+	var id int
+	createListQuery := fmt.Sprintf("INSERT INTO %s (title, description) VALUES ($1, $2) RETURNING id", todoListTable) // SQL зарос для создания списка в таблице todo_list, вовращает id созданного списка
+	row := tx.QueryRow(createListQuery, list.Title, list.Description)                                                 // Выполняем первый запрос в транзакции
+	err = row.Scan(&id)
+	if err != nil {
+		tx.Rollback() // В случае ошибки откатываем транзакцию методом Rollback()
+		return 0, err
+	}
+
+	createUserListQuery := fmt.Sprintf("INSERT INTO %s (user_id, list_id) VALUES ($1, $2)", usersListsTable) // SQL зарос что бы связать id Пользователя и id новго списка
+	_, err = tx.Exec(createUserListQuery, userId, id)                                                        // Метод Exec для простого выполнения SQL запроса
+	if err != nil {
+		tx.Rollback() // В случае ошибки откатываем транзакцию методом Rollback()
+		return 0, err
+	}
+
+	return id, tx.Commit() // Commit() применяет изменения к базе данных и заканчивает транзакцию
+}

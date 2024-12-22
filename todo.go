@@ -1,8 +1,8 @@
 package todo
 
-type Todo struct { // Структура для Списка Задач "todo"
+type TodoList struct { // Структура для Списка Задач "todo"
 	Id          int    `json:"id"`
-	Title       string `json:"title"`
+	Title       string `json:"title" binding:"required"`
 	Description string `json:"description"`
 }
 
