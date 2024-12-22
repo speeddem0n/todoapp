@@ -12,9 +12,11 @@ type Authorization interface { // интерфейс Authorization
 }
 
 type TodoList interface {
-	Create(userId int, list todo.TodoList) (int, error) // Метод для создания списка возвращает id созданного списка и ошибку
-	GetALL(userId int) ([]todo.TodoList, error)         // Метод для возвращения всех списков дел конкретного пользователя (принимает id пользователя)
-	GetById(userId, listId int) (todo.TodoList, error)  // Метод для получения конкретного списка пользователя по его ID
+	Create(userId int, list todo.TodoList) (int, error)          // Метод для создания списка возвращает id созданного списка и ошибку
+	GetAll(userId int) ([]todo.TodoList, error)                  // Метод для возвращения всех списков "todo" конкретного пользователя (принимает id пользователя)
+	GetById(userId, listId int) (todo.TodoList, error)           // Метод для получения списка пользователя по его ID
+	Update(userId, listId int, input todo.UpdateListInput) error // Метод для обновления списка по его id
+	Delete(userId, listId int) error                             // Метод для удаления списка по его ID
 }
 
 type TodoItem interface {
