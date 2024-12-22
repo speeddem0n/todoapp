@@ -13,7 +13,7 @@ type TodoListPostgres struct {
 	db *sqlx.DB
 }
 
-func NewTodoListPostgres(db *sqlx.DB) *TodoListPostgres { // инициалицируем новую структуру AuthPostgres которая принимает подключение в БД
+func NewTodoListPostgres(db *sqlx.DB) *TodoListPostgres { // инициалицируем новую структуру TodoListPostgres которая принимает подключение в БД
 	return &TodoListPostgres{db: db}
 }
 

@@ -27,6 +27,7 @@ type TodoList interface {
 }
 
 type TodoItem interface {
+	Create(listId int, item todo.TodoItem) (int, error) // Метод для создания "todo" элемента возвращает id созданного элемента и ошибку
 }
 
 type Repository struct { // Структура Repository содержит 3 интерфейса аналогичн структуре service (4 УРОВЕНЬ)
@@ -39,5 +40,6 @@ func NewRepository(db *sqlx.DB) *Repository { // Конструктор для �
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
 		TodoList:      NewTodoListPostgres(db),
+		TodoItem:      NewTodoItemPostgres(db),
 	}
 }

@@ -84,12 +84,6 @@ func (h *Handler) updateList(c *gin.Context) { // Метод для обновл
 		return
 	}
 
-	_, err = h.services.TodoList.GetById(userId, listId) // Вызывает метод GetById из сервисов для получения всех списков пользоваетля
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "list doesn't exist")
-		return
-	}
-
 	var input todo.UpdateListInput
 	err = c.BindJSON(&input) // Получаем инпут от пользователя и записываем его в структуру input todo.UpdateListInput
 	if err != nil {

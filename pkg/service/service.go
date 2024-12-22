@@ -20,6 +20,7 @@ type TodoList interface {
 }
 
 type TodoItem interface {
+	Create(userId, listId int, item todo.TodoItem) (int, error) // Метод для создания "todo" элемента возвращает id созданного элемента и ошибку
 }
 
 type Service struct { // Структура service содержит 3 интерфейса (3 УРОВЕНЬ)
@@ -32,5 +33,6 @@ func NewService(repos *repository.Repository) *Service { // Конструкто
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
 		TodoList:      newTodoListService(repos.TodoList),
+		TodoItem:      newtodoItemService(repos.TodoItem, repos.TodoList),
 	}
 }
