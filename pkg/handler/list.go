@@ -31,7 +31,25 @@ func (h *Handler) createList(c *gin.Context) { // Метод обработчи�
 	})
 }
 
+type getAllListsResponse struct {
+	Data []todo.TodoList `json:"data"`
+}
+
 func (h *Handler) getAllLists(c *gin.Context) {
+	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
+	if err != nil {
+		return
+	}
+
+	lists, err := h.services.TodoList.GetALL(userId) // Вызывает метод GetALL из сервисов для получения всех списков пользоваетля
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getAllListsResponse{ // Записываем в тело ответа структуру getAllListsResponse которая содержит слайс Списков пользователя
+		Data: lists,
+	})
 
 }
 

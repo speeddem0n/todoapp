@@ -39,3 +39,12 @@ func (r *TodoListPostgres) Create(userId int, list todo.TodoList) (int, error) {
 
 	return id, tx.Commit() // Commit() применяет изменения к базе данных и заканчивает транзакцию
 }
+
+func (r *TodoListPostgres) GetAll(userId int) ([]todo.TodoList, error) {
+	var lists []todo.TodoList                                                                                                                                                                                        // Пустой стайс для списков дел
+	query := fmt.Sprintf("SELECT todo_lists.id, todo_lists.title, todo_lists.description FROM %s INNER JOIN %s on todo_lists.id = users_list.list_id WHERE users_list.user_id = $1", todoListTable, usersListsTable) // SQL запрос для получения всех списков конкретного юзера
+
+	err := r.db.Select(&lists, query, userId) // Метод селек для выборки N колл-ва элементов из БД
+
+	return lists, err // Возвращаем списки и ошибку
+}
