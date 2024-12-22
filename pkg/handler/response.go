@@ -5,8 +5,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type errorResponse struct {
+type errorResponse struct { // Структура для кастомной ошибки в формате json
 	Message string `json:"message"`
+}
+
+type statusResponse struct { // Структура ответа обработчика
+	Status string `json:"status"`
 }
 
 func newErrorResponse(c *gin.Context, statusCode int, message string) { // Функция для обработки http ошибок

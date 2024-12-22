@@ -24,3 +24,7 @@ func (s *TodoListService) GetALL(userId int) ([]todo.TodoList, error) { // Ме�
 func (s *TodoListService) GetById(userId, listId int) (todo.TodoList, error) { // Метод для получения конкретного списка пользователя по его ID
 	return s.repo.GetById(userId, listId) // Возвращает анологичный метод из репозитория
 }
+
+func (s *TodoListService) Delete(userId, listId int) error { // Метод для удаления конкретного списка пользователя по его ID
+	return s.repo.Delete(userId, listId) // Возвращает анологичный метод из репозитория
+}

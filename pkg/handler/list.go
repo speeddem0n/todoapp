@@ -60,7 +60,7 @@ func (h *Handler) getListById(c *gin.Context) { // Метод для получ�
 		return
 	}
 
-	listId, err := strconv.Atoi(c.Param("id"))
+	listId, err := strconv.Atoi(c.Param("id")) // достаем id из URL param
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
@@ -82,5 +82,26 @@ func (h *Handler) updateList(c *gin.Context) {
 }
 
 func (h *Handler) deleteList(c *gin.Context) {
+	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
+	if err != nil {
+		return
+	}
+
+	listId, err := strconv.Atoi(c.Param("id")) // достаем id из URL param
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		return
+
+	}
+
+	err = h.services.TodoList.Delete(userId, listId) // Вызывает метод Delete из сервисов для удаления списка по listID
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	}) // Возващаем Структуру statusResponse и пишем в ней что все ok
 
 }

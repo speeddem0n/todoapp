@@ -59,3 +59,11 @@ func (r *TodoListPostgres) GetById(userId, listId int) (todo.TodoList, error) { 
 
 	return list, err // Возвращаем списки и ошибку
 }
+
+func (r *TodoListPostgres) Delete(userId, listId int) error {
+	query := fmt.Sprintf("DELETE FROM %s tl USING %s ul where tl.id = ul.list_id AND ul.user_id = $1 AND ul.list_id = $2", todoListTable, usersListsTable) // SQL для удаления списка пользователя по его id
+
+	_, err := r.db.Exec(query, userId, listId) // Метод Exec для простого выполнения SQL запроса
+
+	return err // Возвращаем ошибку (или ее отсутствие)
+}
