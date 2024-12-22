@@ -22,11 +22,11 @@ type tokenClaims struct { // структура tokenClaims для послуд�
 	UserId int `json:"user_id"`
 }
 
-type AuthService struct {
+type AuthService struct { // Структура AuthService в которой находится соответствующий интерфейс из репозитория
 	repo repository.Authorization
 }
 
-func NewAuthService(repo repository.Authorization) *AuthService { // Конструктор для структуры AuthService
+func NewAuthService(repo repository.Authorization) *AuthService { // Конструктор для структуры AuthService принимает соответствующий интерфейс repository.Authorization из репозитория
 	return &AuthService{repo: repo}
 }
 
