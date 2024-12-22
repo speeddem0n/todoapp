@@ -8,7 +8,7 @@ import (
 const ( // Константы с названием таблиц из БД
 	usersTable      = "users"
 	todoListTable   = "todo_lists"
-	usersListsTable = "users_lists"
+	usersListsTable = "users_list"
 	todoItemsTable  = "todo_items"
 	listsItemsTable = "lists_items"
 )
@@ -19,6 +19,9 @@ type Authorization interface {
 }
 
 type TodoList interface {
+	Create(userId int, list todo.TodoList) (int, error) // Метод для создания списка возвращает id созданного списка и ошибку
+	GetAll(userId int) ([]todo.TodoList, error)         // Метод для возвращения всех списков дел конкретного пользователя (принимает id пользователя)
+	GetById(userId, listId int) (todo.TodoList, error)  // Метод для получения конкретного списка пользователя по его ID
 }
 
 type TodoItem interface {
@@ -33,5 +36,6 @@ type Repository struct { // Структура Repository содержит 3 и�
 func NewRepository(db *sqlx.DB) *Repository { // Конструктор для структуры Repository
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
+		TodoList:      NewTodoListPostgres(db),
 	}
 }
