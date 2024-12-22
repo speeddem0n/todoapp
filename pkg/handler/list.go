@@ -8,41 +8,37 @@ import (
 	todo "github.com/speeddem0n/todoapp"
 )
 
-func (h *Handler) createList(c *gin.Context) { // Метод обработчика для создания Списка todo
+func (h *Handler) createList(c *gin.Context) { // Метод для создания списка возвращает id созданного списка и ошибку
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
 		return
 	}
 
 	var input todo.TodoList
-	err = c.BindJSON(&input)
+	err = c.BindJSON(&input) // Считываем инпут пользователя в input
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	id, err := h.services.TodoList.Create(userId, input)
+	id, err := h.services.TodoList.Create(userId, input) // вызываем метод Create для создания нового списка
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
+	c.JSON(http.StatusOK, map[string]interface{}{ // В ответ возвращаем id только что созданного списка
 		"id": id,
 	})
 }
 
-type getAllListsResponse struct { // Структура для записи слайса списков что бы потом передать ее в тело ответа метода getAllLists()
-	Data []todo.TodoList `json:"data"`
-}
-
-func (h *Handler) getAllLists(c *gin.Context) { // Метод для получения всех списков конкретного пользователя
+func (h *Handler) getAllLists(c *gin.Context) { // Метод для возвращения всех списков "todo" конкретного пользователя (принимает id пользователя)
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
 		return
 	}
 
-	lists, err := h.services.TodoList.GetALL(userId) // Вызывает метод GetALL из сервисов для получения всех списков пользоваетля
+	lists, err := h.services.TodoList.GetAll(userId) // Вызывает метод GetALL из сервисов для получения всех списков пользоваетля
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -54,7 +50,7 @@ func (h *Handler) getAllLists(c *gin.Context) { // Метод для получ�
 
 }
 
-func (h *Handler) getListById(c *gin.Context) { // Метод для получения конкретного списка пользователя по его ID
+func (h *Handler) getListById(c *gin.Context) { // Метод для получения списка пользователя по его ID
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
 		return
@@ -64,10 +60,9 @@ func (h *Handler) getListById(c *gin.Context) { // Метод для получ�
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
 		return
-
 	}
 
-	list, err := h.services.TodoList.GetById(userId, listId) // Вызывает метод GetALL из сервисов для получения всех списков пользоваетля
+	list, err := h.services.TodoList.GetById(userId, listId) // Вызывает метод GetById из сервисов для получения всех списков пользоваетля
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -77,11 +72,43 @@ func (h *Handler) getListById(c *gin.Context) { // Метод для получ�
 
 }
 
-func (h *Handler) updateList(c *gin.Context) {
+func (h *Handler) updateList(c *gin.Context) { // Метод для обновления списка по его id
+	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
+	if err != nil {
+		return
+	}
 
+	listId, err := strconv.Atoi(c.Param("id")) // достаем id из URL param
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		return
+	}
+
+	_, err = h.services.TodoList.GetById(userId, listId) // Вызывает метод GetById из сервисов для получения всех списков пользоваетля
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "list doesn't exist")
+		return
+	}
+
+	var input todo.UpdateListInput
+	err = c.BindJSON(&input) // Получаем инпут от пользователя и записываем его в структуру input todo.UpdateListInput
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err = h.services.Update(userId, listId, input) // Вызывает метод Delete из сервисов для обновления списка по listID
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	}) // Возващаем Структуру statusResponse и пишем в ней что все ok
 }
 
-func (h *Handler) deleteList(c *gin.Context) {
+func (h *Handler) deleteList(c *gin.Context) { // Метод для удаления списка по его ID
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
 		return
