@@ -20,3 +20,7 @@ func (s *TodoListService) Create(userId int, list todo.TodoList) (int, error) { 
 func (s *TodoListService) GetALL(userId int) ([]todo.TodoList, error) { // Метод для возвращения всех списков дел конкретного пользователя (принимает id пользователя)
 	return s.repo.GetAll(userId) // Возвращает анологичный метод из репозитория
 }
+
+func (s *TodoListService) GetById(userId, listId int) (todo.TodoList, error) { // Метод для получения конкретного списка пользователя по его ID
+	return s.repo.GetById(userId, listId) // Возвращает анологичный метод из репозитория
+}

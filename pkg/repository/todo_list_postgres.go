@@ -41,10 +41,21 @@ func (r *TodoListPostgres) Create(userId int, list todo.TodoList) (int, error) {
 }
 
 func (r *TodoListPostgres) GetAll(userId int) ([]todo.TodoList, error) {
-	var lists []todo.TodoList                                                                                                                                                                                        // Пустой стайс для списков дел
+	var lists []todo.TodoList // Пустой стайс для списков дел
+
 	query := fmt.Sprintf("SELECT todo_lists.id, todo_lists.title, todo_lists.description FROM %s INNER JOIN %s on todo_lists.id = users_list.list_id WHERE users_list.user_id = $1", todoListTable, usersListsTable) // SQL запрос для получения всех списков конкретного юзера
 
-	err := r.db.Select(&lists, query, userId) // Метод селек для выборки N колл-ва элементов из БД
+	err := r.db.Select(&lists, query, userId) // Метод Select для выборки N колл-ва элементов из БД
 
 	return lists, err // Возвращаем списки и ошибку
+}
+
+func (r *TodoListPostgres) GetById(userId, listId int) (todo.TodoList, error) { // Метод для получения конкретного списка пользователя по его ID
+	var list todo.TodoList // переменная для последующей записи нужного списка
+
+	query := fmt.Sprintf("SELECT todo_lists.id, todo_lists.title, todo_lists.description FROM %s INNER JOIN %s on todo_lists.id = users_list.list_id WHERE users_list.user_id = $1 AND users_list.list_id = $2", todoListTable, usersListsTable) // SQL запрос для получения конкретного списка, конкретного юзера
+
+	err := r.db.Get(&list, query, userId, listId) // Метод Get для выборки 1ой строки из БД
+
+	return list, err // Возвращаем списки и ошибку
 }
