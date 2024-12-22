@@ -5,11 +5,11 @@ import (
 	"github.com/speeddem0n/todoapp/pkg/service"
 )
 
-type Handler struct {
+type Handler struct { // Структура handler
 	services *service.Service
 }
 
-func NewHandler(services *service.Service) *Handler {
+func NewHandler(services *service.Service) *Handler { // Инициализируем новую структуру handler и передаем в нее стуруктуру Service с уровня .\services (2 УРОВЕНЬ)
 	return &Handler{services: services}
 }
 
@@ -19,13 +19,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	auth := router.Group("/auth") // Группа авторизации
 	{
-		auth.POST("/sign-up", h.singUp)
-		auth.POST("/sign-in", h.singIn)
+		auth.POST("/sign-up", h.singUp) // Регистрация
+		auth.POST("/sign-in", h.singIn) // Авторизация
 	}
 
-	api := router.Group("/api") // Группа API
+	api := router.Group("/api", h.userIdentity) // Группа API
 	{
-		lists := api.Group("/lists")
+		lists := api.Group("/lists") // Группа списков
 		{
 			lists.POST("/", h.createList)
 			lists.GET("/", h.getAllLists)

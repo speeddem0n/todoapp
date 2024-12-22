@@ -2,6 +2,7 @@ package service
 
 import (
 	"crypto/sha1"
+	"errors"
 	"fmt"
 	"time"
 
@@ -11,9 +12,9 @@ import (
 )
 
 const (
-	salt       = "asd2gewvqwef234rtf" // Случайная соль для пароля
-	tokenTTL   = 12 * time.Hour
-	signingKey = "qweg1q2egqewf#fqvcq"
+	salt       = "asd2gewvqwef234rtf"  // Случайная соль для пароля
+	tokenTTL   = 12 * time.Hour        // Время валидности jwt токена
+	signingKey = "qweg1q2egqewf#fqvcq" // Ключ для подписи jwt токена
 )
 
 type tokenClaims struct { // структура tokenClaims для послудующей передачи в NewWithClaims в методе GenerateToken
@@ -49,6 +50,26 @@ func (s *AuthService) GenerateToken(username, password string) (string, error) {
 		user.Id,
 	})
 	return token.SignedString([]byte(signingKey)) // Generate the signing string
+}
+
+func (s *AuthService) ParseToken(accessToken string) (int, error) { // Парсит jwt токен и возвращает id пользователя если все ОК
+	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok { // Проверяем что метод подписи токена HMAC
+			return nil, errors.New("invalid singing method") // Ошибка неверный метод подписи
+		}
+
+		return []byte(signingKey), nil // Возвращаем ключ подписи если все ОК
+	})
+	if err != nil {
+		return 0, err
+	}
+
+	claims, ok := token.Claims.(*tokenClaims) // Функция ParseWithClaims возвращает объект токена, в котором есть поле Claims типа interface. Приведем его в структуре tokenClaims и проверим все ли хорошо.
+	if !ok {
+		return 0, errors.New("token claims are not of type *tokenClaims")
+	}
+
+	return claims.UserId, nil
 }
 
 func generatePasswordHash(password string) string { // Функция для генерации Хэша пароля

@@ -24,7 +24,7 @@ type TodoList interface {
 type TodoItem interface {
 }
 
-type Repository struct {
+type Repository struct { // Структура Repository содержит 3 интерфейса аналогичн структуре service (4 УРОВЕНЬ)
 	Authorization
 	TodoList
 	TodoItem
