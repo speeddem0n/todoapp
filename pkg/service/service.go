@@ -5,9 +5,10 @@ import (
 	"github.com/speeddem0n/todoapp/pkg/repository"
 )
 
-type Authorization interface { // service Authorization
-	CreateUser(user todo.User) (int, error)
-	GenerateToken(username, password string) (string, error)
+type Authorization interface { // интерфейс Authorization
+	CreateUser(user todo.User) (int, error)                  // Создает нового пользователя
+	GenerateToken(username, password string) (string, error) // Создает jwt токен
+	ParseToken(token string) (int, error)                    // Парсит jwt токен и возвращает id пользователя если все ОК
 }
 
 type TodoList interface {
@@ -16,7 +17,7 @@ type TodoList interface {
 type TodoItem interface {
 }
 
-type Service struct {
+type Service struct { // Структура service содержит 3 интерфейса (3 УРОВЕНЬ)
 	Authorization
 	TodoList
 	TodoItem

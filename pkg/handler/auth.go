@@ -27,12 +27,12 @@ func (h *Handler) singUp(c *gin.Context) { // Метод обработчик д
 }
 
 type signInInput struct { // Структура для sign in юзера
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Username string `json:"username" binding:"required"` // Имя пользователя
+	Password string `json:"password" binding:"required"` // Пароль
 }
 
 func (h *Handler) singIn(c *gin.Context) { // Метод обработчик для Авторизации
-	var input signInInput
+	var input signInInput // Объявляем пустую структуру signInInput
 
 	err := c.BindJSON(&input) // BindJSON принимает ссылку на объект в который мы хотим распарсить тело JSON
 	if err != nil {
@@ -45,7 +45,7 @@ func (h *Handler) singIn(c *gin.Context) { // Метод обработчик д
 		newErrorResponse(c, http.StatusInternalServerError, err.Error()) // В случае ошибки возвращаем код InternalServerError
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{ // Передаем token бользоваетля в случае успеха
+	c.JSON(http.StatusOK, map[string]interface{}{ // Передаем token пользоваетля в случае успеха
 		"token": token,
 	})
 }
