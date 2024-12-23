@@ -23,10 +23,14 @@ func (s *todoItemService) Create(userId, listId int, item todo.TodoItem) (int, e
 		return 0, err
 	}
 
-	return s.repo.Create(listId, item)
+	return s.repo.Create(listId, item) // Возвращает анологичный метод из репозитория
 
 }
 
 func (s *todoItemService) GetAll(userId, listId int) ([]todo.TodoItem, error) { // Метод для возвращения всех элементов списка конкретного пользователя (принимает id пользователя и списка)
-	return s.repo.GetAll(userId, listId)
+	return s.repo.GetAll(userId, listId) // Возвращает анологичный метод из репозитория
+}
+
+func (s *todoItemService) GetById(userId, itemId int) (todo.TodoItem, error) { // Метод для получения элемента списка по его ID
+	return s.repo.GetById(userId, itemId) // Возвращает анологичный метод из репозитория
 }

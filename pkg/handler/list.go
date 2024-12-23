@@ -62,7 +62,7 @@ func (h *Handler) getListById(c *gin.Context) { // Метод для получ�
 		return
 	}
 
-	list, err := h.services.TodoList.GetById(userId, listId) // Вызывает метод GetById из сервисов для получения всех списков пользоваетля
+	list, err := h.services.TodoList.GetById(userId, listId) // Вызывает метод GetById из сервисов для получения списка по его id
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

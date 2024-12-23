@@ -42,8 +42,8 @@ func (r *TodoItemPostgres) Create(listId int, item todo.TodoItem) (int, error) {
 }
 
 func (r *TodoItemPostgres) GetAll(userId, listId int) ([]todo.TodoItem, error) { // Метод для возвращения всех элементов списка конкретного пользователя (принимает id пользователя и списка)
-	var items []todo.TodoItem // Стурктура для записи ответа
-	query := fmt.Sprintf(`SELECT ti.title, ti.description, ti.done FROM %s ti  
+	var items []todo.TodoItem // Слайс стурктур для записи ответа
+	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti  
 	INNER JOIN %s li on li.item_id = ti.id 
 	INNER JOIN %s ul on ul.list_id = li.list_id
 	WHERE li.list_id = $1 AND ul.user_id = $2`, todoItemsTable, listsItemsTable, usersListsTable) // SQL зарос для выборки всех элементов "todo" из списка
@@ -53,5 +53,20 @@ func (r *TodoItemPostgres) GetAll(userId, listId int) ([]todo.TodoItem, error) {
 		return nil, err
 	}
 
-	return items, nil
+	return items, nil // Возвращаем срез элементов
+}
+
+func (r *TodoItemPostgres) GetById(userId, itemId int) (todo.TodoItem, error) { // Метод для получения элемента списка по его ID
+	var item todo.TodoItem // Стурктура для записи ответа
+	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti  
+	INNER JOIN %s li on li.item_id = ti.id 
+	INNER JOIN %s ul on ul.list_id = li.list_id
+	WHERE ti.id = $1 AND ul.user_id = $2`, todoItemsTable, listsItemsTable, usersListsTable) // SQL зарос для выборки всех элементов "todo" из списка
+
+	err := r.db.Get(&item, query, itemId, userId) // Метод Select для выборки элемента из БД
+	if err != nil {
+		return item, err
+	}
+
+	return item, nil // Возвращаем полученный элемент
 }
