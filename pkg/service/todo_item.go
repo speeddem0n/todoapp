@@ -26,3 +26,7 @@ func (s *todoItemService) Create(userId, listId int, item todo.TodoItem) (int, e
 	return s.repo.Create(listId, item)
 
 }
+
+func (s *todoItemService) GetAll(userId, listId int) ([]todo.TodoItem, error) { // Метод для возвращения всех элементов списка конкретного пользователя (принимает id пользователя и списка)
+	return s.repo.GetAll(userId, listId)
+}

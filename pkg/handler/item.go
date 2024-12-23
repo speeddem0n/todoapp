@@ -14,7 +14,7 @@ func (h *Handler) createItem(c *gin.Context) {
 		return
 	}
 
-	listId, err := strconv.Atoi(c.Param("id")) // достаем id из URL param
+	listId, err := strconv.Atoi(c.Param("id")) // достаем id списка из URL param
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid list id param")
 		return
@@ -39,6 +39,24 @@ func (h *Handler) createItem(c *gin.Context) {
 }
 
 func (h *Handler) getAllItems(c *gin.Context) {
+	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
+	if err != nil {
+		return
+	}
+
+	listId, err := strconv.Atoi(c.Param("id")) // достаем id из URL param
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid list id param")
+		return
+	}
+
+	items, err := h.services.TodoItem.GetAll(userId, listId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, items)
 
 }
 

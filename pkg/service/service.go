@@ -21,6 +21,7 @@ type TodoList interface {
 
 type TodoItem interface {
 	Create(userId, listId int, item todo.TodoItem) (int, error) // Метод для создания "todo" элемента возвращает id созданного элемента и ошибку
+	GetAll(userId, listId int) ([]todo.TodoItem, error)         // Метод для возвращения всех элементов списка конкретного пользователя (принимает id пользователя и списка)
 }
 
 type Service struct { // Структура service содержит 3 интерфейса (3 УРОВЕНЬ)
