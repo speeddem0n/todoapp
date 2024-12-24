@@ -27,7 +27,7 @@ func (h *Handler) createList(c *gin.Context) { // Метод для создан
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{ // В ответ возвращаем id только что созданного списка
+	c.JSON(http.StatusOK, gin.H{ // В ответ возвращаем id только что созданного списка (gin.H тоже самое что map[string]interface{})
 		"id": id,
 	})
 }
@@ -62,7 +62,7 @@ func (h *Handler) getListById(c *gin.Context) { // Метод для получ�
 		return
 	}
 
-	list, err := h.services.TodoList.GetById(userId, listId) // Вызывает метод GetById из сервисов для получения всех списков пользоваетля
+	list, err := h.services.TodoList.GetById(userId, listId) // Вызывает метод GetById из сервисов для получения списка по его id
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -84,12 +84,6 @@ func (h *Handler) updateList(c *gin.Context) { // Метод для обновл
 		return
 	}
 
-	_, err = h.services.TodoList.GetById(userId, listId) // Вызывает метод GetById из сервисов для получения всех списков пользоваетля
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, "list doesn't exist")
-		return
-	}
-
 	var input todo.UpdateListInput
 	err = c.BindJSON(&input) // Получаем инпут от пользователя и записываем его в структуру input todo.UpdateListInput
 	if err != nil {
@@ -97,7 +91,7 @@ func (h *Handler) updateList(c *gin.Context) { // Метод для обновл
 		return
 	}
 
-	err = h.services.Update(userId, listId, input) // Вызывает метод Delete из сервисов для обновления списка по listID
+	err = h.services.TodoList.Update(userId, listId, input) // Вызывает метод Delete из сервисов для обновления списка по listID
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
