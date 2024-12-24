@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+
 	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/pkg/repository"
 )
@@ -33,6 +35,17 @@ func (s *todoItemService) GetAll(userId, listId int) ([]todo.TodoItem, error) { 
 
 func (s *todoItemService) GetById(userId, itemId int) (todo.TodoItem, error) { // Метод для получения элемента списка по его ID
 	return s.repo.GetById(userId, itemId) // Возвращает анологичный метод из репозитория
+}
+
+func (s *todoItemService) Update(userId, itemId int, input todo.UpdateItemInput) error { // Метод для обновления элемента списка по его id
+	_, err := s.repo.GetById(userId, itemId) //Используем метод GetById что убедиться что такоей  список существует для данного пользователя
+	if err != nil {
+		return errors.New("list doesn't exist")
+	}
+	if err := input.Validate(); err != nil { // Валидация инпута
+		return err
+	}
+	return s.repo.Update(userId, itemId, input) // Возвращает анологичный метод из репозитория
 }
 
 func (s *todoItemService) Delete(userId, itemId int) error { // Метод для удаления эелемнта списка по его ID

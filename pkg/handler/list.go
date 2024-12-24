@@ -91,7 +91,7 @@ func (h *Handler) updateList(c *gin.Context) { // Метод для обновл
 		return
 	}
 
-	err = h.services.Update(userId, listId, input) // Вызывает метод Delete из сервисов для обновления списка по listID
+	err = h.services.TodoList.Update(userId, listId, input) // Вызывает метод Delete из сервисов для обновления списка по listID
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/jmoiron/sqlx"
 	todo "github.com/speeddem0n/todoapp"
@@ -69,6 +70,46 @@ func (r *TodoItemPostgres) GetById(userId, itemId int) (todo.TodoItem, error) { 
 	}
 
 	return item, nil // Возвращаем полученный элемент
+}
+
+func (r *TodoItemPostgres) Update(userId, itemId int, input todo.UpdateItemInput) error { // Метод для обновления элемента списка по его id
+	setValues := make([]string, 0) // Слайс строк
+	args := make([]interface{}, 0) // Слайс interface
+	argId := 1                     // Id аргументов
+
+	if input.Title != nil { // Проверка поля Title
+		setValues = append(setValues, fmt.Sprintf("title=$%d", argId)) // Добавляем в слайс элементы для формирования запроса в базу. В setValues добавляем присвоение к полю title а после знака "=" записываем значение для placeholder
+		args = append(args, *input.Title)                              // В слайс агрументов добовляется само значения поля Title
+		argId++                                                        // инкримент id аргумента
+	}
+
+	if input.Description != nil { // Проверка поля Description
+		setValues = append(setValues, fmt.Sprintf("description=$%d", argId)) // Добавляем в слайс элементы для формирования запроса в базу. В setValues добавляем присвоение к полю Description а после знака "=" записываем значение для placeholder
+		args = append(args, *input.Description)                              // В слайс агрументов добовляется само значения поля Description
+		argId++                                                              // инкримент id аргумента
+	}
+
+	if input.Done != nil { // Проверка поля Done
+		setValues = append(setValues, fmt.Sprintf("done=$%d", argId)) // Добавляем в слайс элементы для формирования запроса в базу. В setValues добавляем присвоение к полю Done а после знака "=" записываем значение для placeholder
+		args = append(args, *input.Done)                              // В слайс агрументов добовляется само значения поля Done
+		argId++                                                       // инкримент id аргумента
+	}
+
+	setQuery := strings.Join(setValues, ", ") // Соеденяем элементы setValues в одну строку через запятую
+
+	query := fmt.Sprintf(`UPDATE %s ti SET %s FROM %s li, %s ul
+	where ti.id = li.item_id AND li.list_id = ul.list_id AND ul.user_id = $%d 
+	AND ti.id =$%d`, todoItemsTable, setQuery, listsItemsTable, usersListsTable, argId, argId+1)
+	/* SQL запрос обновления в БД.
+	Пояснения для sprintf(1: таблица todo_lists, 2: строка setQuery со значениями которые нужно изменить,
+	3: таблица list_items, 4: таблица user_lists, 5: Номер плейсхолдера, 6: Номер плейсхолдера+1)
+	*/
+
+	args = append(args, userId, itemId) // Добовляем в args id элемента и id пользователя
+
+	_, err := r.db.Exec(query, args...) // Выполням запрос методом Exec и передаем в него список аргументов
+
+	return err
 }
 
 func (r *TodoItemPostgres) Delete(userId, itemId int) error { // Метод для удаления эелемнта списка по его ID

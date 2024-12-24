@@ -82,7 +82,33 @@ func (h *Handler) getItemById(c *gin.Context) {
 }
 
 func (h *Handler) updateItem(c *gin.Context) {
+	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
+	if err != nil {
+		return
+	}
 
+	itemId, err := strconv.Atoi(c.Param("id")) // достаем id из URL param
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		return
+	}
+
+	var input todo.UpdateItemInput
+	err = c.BindJSON(&input) // Получаем инпут от пользователя и записываем его в структуру input todo.UpdateListInput
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err = h.services.TodoItem.Update(userId, itemId, input) // Вызывает метод Delete из сервисов для обновления списка по listID
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	}) // Возващаем Структуру statusResponse и пишем в ней что все ok
 }
 
 func (h *Handler) deleteItem(c *gin.Context) { // Метод обработчика для удаления эелемнта списка по его ID

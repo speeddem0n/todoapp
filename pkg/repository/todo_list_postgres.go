@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/sirupsen/logrus"
 	todo "github.com/speeddem0n/todoapp"
 )
 
@@ -86,9 +85,6 @@ func (r *TodoListPostgres) Update(userId, listId int, input todo.UpdateListInput
 	*/
 
 	args = append(args, listId, userId) // Добовляем в args id списка и id пользователя
-
-	logrus.Debugf("updateQuery: %s", query) // Логируем запрос в консоль
-	logrus.Debugf("args: %s", args)         // Логируем аргументы в консоль
 
 	_, err := r.db.Exec(query, args...) // Выполням запрос методом Exec и передаем в него список аргументов
 
