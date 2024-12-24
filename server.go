@@ -4,8 +4,6 @@ import (
 	"context"
 	"net/http"
 	"time"
-
-	"github.com/sirupsen/logrus"
 )
 
 type Server struct {
@@ -20,7 +18,7 @@ func (s *Server) Run(port string, handler http.Handler) error { // Метод з
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
 	}
-	logrus.Print("Сервер запущен")
+
 	return s.httpServer.ListenAndServe() // Возвращаем метод структуры http.Server, ListenAndServe()
 }
 
