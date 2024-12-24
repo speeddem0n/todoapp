@@ -3,11 +3,11 @@ package handler
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin" // используется gin вместо стандартого net/http
+	"github.com/gin-gonic/gin" // используется gin web framework
 	todo "github.com/speeddem0n/todoapp"
 )
 
-func (h *Handler) singUp(c *gin.Context) { // Метод обработчик для Регистрации
+func (h *Handler) singUp(c *gin.Context) { // Метод обработчик для Регистрации пользователей
 	var input todo.User
 
 	err := c.BindJSON(&input) // BindJSON принимает ссылку на объект в который мы хотим распарсить тело JSON

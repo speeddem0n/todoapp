@@ -14,8 +14,8 @@ func NewHandler(services *service.Service) *Handler { // Инициализир�
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
-	gin.SetMode(gin.ReleaseMode)
-	router := gin.New() // Инициализация роутера
+	gin.SetMode(gin.ReleaseMode) // Устанавлевает ReleaseMod Для запуска сервера
+	router := gin.New()          // Инициализация роутера
 
 	auth := router.Group("/auth") // Группа авторизации
 	{
@@ -27,24 +27,24 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		lists := api.Group("/lists") // Группа списков
 		{
-			lists.POST("/", h.createList)
-			lists.GET("/", h.getAllLists)
-			lists.GET("/:id", h.getListById)
-			lists.PUT("/:id", h.updateList)
-			lists.DELETE("/:id", h.deleteList)
+			lists.POST("/", h.createList)      // Создать список
+			lists.GET("/", h.getAllLists)      // Получить все списки
+			lists.GET("/:id", h.getListById)   // Получить список по Id
+			lists.PUT("/:id", h.updateList)    // Обновить список по Id
+			lists.DELETE("/:id", h.deleteList) // Удалить список по Id
 
-			items := lists.Group(":id/items")
+			items := lists.Group(":id/items") // Группа элементов списка
 			{
-				items.POST("/", h.createItem)
-				items.GET("/", h.getAllItems)
+				items.POST("/", h.createItem) // Создать элемент списока
+				items.GET("/", h.getAllItems) // Получить все элементы списка
 			}
 		}
 
-		items := api.Group("items")
+		items := api.Group("items") // Группа элементов списка
 		{
-			items.GET("/:id", h.getItemById)
-			items.PUT("/:id", h.updateItem)
-			items.DELETE("/:id", h.deleteItem)
+			items.GET("/:id", h.getItemById)   // Получить список по Id
+			items.PUT("/:id", h.updateItem)    // Обновить список по Id
+			items.DELETE("/:id", h.deleteItem) // Удалить список по Id
 		}
 	}
 
