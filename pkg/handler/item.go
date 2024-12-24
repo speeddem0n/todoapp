@@ -33,7 +33,7 @@ func (h *Handler) createItem(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{ // В ответ возвращаем id только что созданного "todo"
+	c.JSON(http.StatusOK, gin.H{ // В ответ возвращаем id только что созданного "todo" (gin.H тоже самое что map[string]interface{})
 		"id": id,
 	})
 }
@@ -85,6 +85,26 @@ func (h *Handler) updateItem(c *gin.Context) {
 
 }
 
-func (h *Handler) deleteItem(c *gin.Context) {
+func (h *Handler) deleteItem(c *gin.Context) { // Метод обработчика для удаления эелемнта списка по его ID
+	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
+	if err != nil {
+		return
+	}
+
+	itemId, err := strconv.Atoi(c.Param("id")) // достаем id из URL param
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid list id param")
+		return
+	}
+
+	err = h.services.TodoItem.Delete(userId, itemId) // Вызывает метод Delete из сервисов для удаления элемента списка по его id
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	}) // Возващаем Структуру statusResponse и пишем в ней что все ok
 
 }

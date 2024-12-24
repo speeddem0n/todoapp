@@ -27,7 +27,7 @@ func (h *Handler) createList(c *gin.Context) { // Метод для создан
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{ // В ответ возвращаем id только что созданного списка
+	c.JSON(http.StatusOK, gin.H{ // В ответ возвращаем id только что созданного списка (gin.H тоже самое что map[string]interface{})
 		"id": id,
 	})
 }

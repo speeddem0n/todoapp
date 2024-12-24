@@ -21,7 +21,7 @@ func (h *Handler) singUp(c *gin.Context) { // Метод обработчик д
 		newErrorResponse(c, http.StatusInternalServerError, err.Error()) // В случае ошибки возвращаем код InternalServerError
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{ // Передаем id бользоваетля в случае успеха
+	c.JSON(http.StatusOK, gin.H{ // Передаем id бользоваетля в случае успеха (gin.H тоже самое что map[string]interface{})
 		"id": id,
 	})
 }
@@ -45,7 +45,7 @@ func (h *Handler) singIn(c *gin.Context) { // Метод обработчик д
 		newErrorResponse(c, http.StatusInternalServerError, err.Error()) // В случае ошибки возвращаем код InternalServerError
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{ // Передаем token пользоваетля в случае успеха
+	c.JSON(http.StatusOK, gin.H{ // Передаем token пользоваетля в случае успеха (gin.H тоже самое что map[string]interface{})
 		"token": token,
 	})
 }

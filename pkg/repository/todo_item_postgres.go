@@ -63,10 +63,18 @@ func (r *TodoItemPostgres) GetById(userId, itemId int) (todo.TodoItem, error) { 
 	INNER JOIN %s ul on ul.list_id = li.list_id
 	WHERE ti.id = $1 AND ul.user_id = $2`, todoItemsTable, listsItemsTable, usersListsTable) // SQL зарос для выборки всех элементов "todo" из списка
 
-	err := r.db.Get(&item, query, itemId, userId) // Метод Select для выборки элемента из БД
+	err := r.db.Get(&item, query, itemId, userId) // Метод Get для выборки одного элемента из БД
 	if err != nil {
 		return item, err
 	}
 
 	return item, nil // Возвращаем полученный элемент
+}
+
+func (r *TodoItemPostgres) Delete(userId, itemId int) error { // Метод для удаления эелемнта списка по его ID
+	query := fmt.Sprintf("DELETE FROM %s ti using %s li, %s ul where li.item_id = ti.id and ul.list_id = li.list_id and ti.id = $1 and ul.user_id = $2", todoItemsTable, listsItemsTable, usersListsTable) // SQL зарос для удаления эелемнта списка по его ID
+
+	_, err := r.db.Exec(query, itemId, userId) // Метод Exec для простого выполнения SQL запроса
+
+	return err // Возвращаем ошибку (или ее отсутствие)
 }

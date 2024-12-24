@@ -34,3 +34,7 @@ func (s *todoItemService) GetAll(userId, listId int) ([]todo.TodoItem, error) { 
 func (s *todoItemService) GetById(userId, itemId int) (todo.TodoItem, error) { // Метод для получения элемента списка по его ID
 	return s.repo.GetById(userId, itemId) // Возвращает анологичный метод из репозитория
 }
+
+func (s *todoItemService) Delete(userId, itemId int) error { // Метод для удаления эелемнта списка по его ID
+	return s.repo.Delete(userId, itemId)
+}
