@@ -37,7 +37,7 @@ func (h *Handler) singIn(c *gin.Context) { // Метод обработчик д
 
 	err := c.BindJSON(&input) // BindJSON принимает ссылку на объект в который мы хотим распарсить тело JSON
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error()) // Возвращается ошибка 400 (Не корректные данные в запросе от пользователя)
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body") // Возвращается ошибка 400 (Не корректные данные в запросе от пользователя)
 		return
 	}
 
