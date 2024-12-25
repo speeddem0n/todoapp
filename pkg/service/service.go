@@ -5,6 +5,8 @@ import (
 	"github.com/speeddem0n/todoapp/pkg/repository"
 )
 
+//go:generate mockgen -source=service.go -destination=mocks/mock.go
+
 type Authorization interface { // Интерфейс для авторизации
 	CreateUser(user todo.User) (int, error)                  // Создает нового пользователя и возвращает его Id
 	GenerateToken(username, password string) (string, error) // Создает jwt токен
