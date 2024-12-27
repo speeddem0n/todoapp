@@ -7,10 +7,10 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/magiconair/properties/assert"
 	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/pkg/service"
 	mock_service "github.com/speeddem0n/todoapp/pkg/service/mocks"
+	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 )
 
@@ -88,8 +88,8 @@ func TestHandler_SignUp(t *testing.T) {
 			r.ServeHTTP(w, req)
 
 			// Assert
-			assert.Equal(t, w.Code, testCase.expectedStatusCode)
-			assert.Equal(t, w.Body.String(), testCase.expectedRequestBody)
+			assert.Equal(t, testCase.expectedStatusCode, w.Code)
+			assert.Equal(t, testCase.expectedRequestBody, w.Body.String())
 		})
 	}
 
@@ -167,8 +167,8 @@ func TestHandler_SingUp(t *testing.T) {
 			r.ServeHTTP(w, req)
 
 			// Assert
-			assert.Equal(t, w.Code, testCase.expectedStatusCode)
-			assert.Equal(t, w.Body.String(), testCase.expectedRequestBody)
+			assert.Equal(t, testCase.expectedStatusCode, w.Code)
+			assert.Equal(t, testCase.expectedRequestBody, w.Body.String())
 		})
 	}
 }
