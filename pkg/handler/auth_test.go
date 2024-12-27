@@ -17,7 +17,7 @@ import (
 func TestHandler_SignUp(t *testing.T) {
 	type mockBehavior func(s *mock_service.MockAuthorization, user todo.User)
 
-	testTable := []struct {
+	testTable := []struct { // Тблица с тестовыми данными
 		name                string
 		inputBody           string
 		inputUser           todo.User
@@ -40,14 +40,14 @@ func TestHandler_SignUp(t *testing.T) {
 			expectedRequestBody: `{"id":1}`,
 		},
 		{
-			name:                "Empty Fields",
+			name:                "Wrong Input",
 			inputBody:           `{"username":"Test","password":"123"}`,
 			mockBehavior:        func(s *mock_service.MockAuthorization, user todo.User) {},
 			expectedStatusCode:  400,
 			expectedRequestBody: `{"message":"invalid input body"}`,
 		},
 		{
-			name:      "Servise Failure",
+			name:      "Servise Error",
 			inputBody: `{"name":"tt","username":"Test","password":"123"}`,
 			inputUser: todo.User{
 				Name:     "tt",
@@ -55,10 +55,10 @@ func TestHandler_SignUp(t *testing.T) {
 				Password: "123",
 			},
 			mockBehavior: func(s *mock_service.MockAuthorization, user todo.User) {
-				s.EXPECT().CreateUser(user).Return(1, errors.New("service failure"))
+				s.EXPECT().CreateUser(user).Return(1, errors.New("something went wrong"))
 			},
 			expectedStatusCode:  500,
-			expectedRequestBody: `{"message":"service failure"}`,
+			expectedRequestBody: `{"message":"something went wrong"}`,
 		},
 	}
 
@@ -98,7 +98,7 @@ func TestHandler_SignUp(t *testing.T) {
 func TestHandler_SingUp(t *testing.T) {
 	type mockBehavior func(s *mock_service.MockAuthorization, input signInInput)
 
-	testTable := []struct {
+	testTable := []struct { // Тблица с тестовыми данными
 		name                string
 		inputBody           string
 		signInInput         signInInput
@@ -120,24 +120,24 @@ func TestHandler_SingUp(t *testing.T) {
 			expectedRequestBody: `{"token":"asd123r13tg13fweg352grweaegr"}`,
 		},
 		{
-			name:                "Empty Fields",
+			name:                "Wrong Input",
 			inputBody:           `{"password":"123"}`,
 			mockBehavior:        func(s *mock_service.MockAuthorization, input signInInput) {},
 			expectedStatusCode:  400,
 			expectedRequestBody: `{"message":"invalid input body"}`,
 		},
 		{
-			name:      "Service Failure",
+			name:      "Servise Error",
 			inputBody: `{"username":"Test","password":"123"}`,
 			signInInput: signInInput{
 				Username: "Test",
 				Password: "123",
 			},
 			mockBehavior: func(s *mock_service.MockAuthorization, input signInInput) {
-				s.EXPECT().GenerateToken(input.Username, input.Password).Return("asd123r13tg13fweg352grweaegr", errors.New("service failure"))
+				s.EXPECT().GenerateToken(input.Username, input.Password).Return("asd123r13tg13fweg352grweaegr", errors.New("something went wrong"))
 			},
 			expectedStatusCode:  500,
-			expectedRequestBody: `{"message":"service failure"}`,
+			expectedRequestBody: `{"message":"something went wrong"}`,
 		},
 	}
 
@@ -155,7 +155,6 @@ func TestHandler_SingUp(t *testing.T) {
 
 			// Test server
 			r := gin.New()
-			gin.SetMode(gin.ReleaseMode)
 			r.POST("/sign-in", handler.singIn)
 
 			// test request

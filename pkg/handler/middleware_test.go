@@ -16,7 +16,7 @@ import (
 func TestHandler_userIdentity(t *testing.T) {
 	type mockBehavior func(s *mock_service.MockAuthorization, token string)
 
-	testTable := []struct {
+	testTable := []struct { // Тблица с тестовыми данными
 		name                string
 		headerName          string
 		headerValue         string
@@ -116,7 +116,7 @@ func TestGetUserId(t *testing.T) {
 		return ctx
 	}
 
-	testTable := []struct {
+	testTable := []struct { // Тблица с тестовыми данными
 		name       string
 		ctx        *gin.Context
 		id         int
