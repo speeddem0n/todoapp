@@ -157,15 +157,15 @@ func TestTodoItemPostgres_GetAll(t *testing.T) {
 		{
 			name: "No Records",
 			mock: func() {
-				rows := sqlmock.NewRows([]string{"id", "title", "description", "done"})
 
 				mock.ExpectQuery("SELECT (.+) FROM todo_items ti INNER JOIN lists_items li on (.+) INNER JOIN users_list ul on (.+) WHERE (.+)").
-					WithArgs(1, 1).WillReturnRows(rows)
+					WithArgs(1, 1).WillReturnError(sql.ErrNoRows)
 			},
 			input: args{
 				listId: 1,
 				userId: 1,
 			},
+			wantErr: true,
 		},
 	}
 
