@@ -77,7 +77,7 @@ func TestHandler_SignUp(t *testing.T) {
 			// Test server
 			r := gin.New()
 			gin.SetMode(gin.ReleaseMode)
-			r.POST("/sign-up", handler.singUp)
+			r.POST("/sign-up", handler.signUp)
 
 			// test request
 
@@ -95,7 +95,7 @@ func TestHandler_SignUp(t *testing.T) {
 
 }
 
-func TestHandler_SingUp(t *testing.T) {
+func TestHandler_SignIn(t *testing.T) {
 	type mockBehavior func(s *mock_service.MockAuthorization, input signInInput)
 
 	testTable := []struct { // Тблица с тестовыми данными
@@ -155,7 +155,7 @@ func TestHandler_SingUp(t *testing.T) {
 
 			// Test server
 			r := gin.New()
-			r.POST("/sign-in", handler.singIn)
+			r.POST("/sign-in", handler.signIn)
 
 			// test request
 

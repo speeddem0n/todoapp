@@ -20,7 +20,7 @@ import (
 // @Failure		500		{object}	errorResponse
 // @Failure		default	{object}	errorResponse
 // @Router			/auth/sign-up [post]
-func (h *Handler) singUp(c *gin.Context) { // Метод обработчик для Регистрации пользователей
+func (h *Handler) signUp(c *gin.Context) { // Метод обработчик для Регистрации пользователей
 	var input todo.User
 
 	err := c.BindJSON(&input) // BindJSON принимает ссылку на объект в который мы хотим распарсить тело JSON
@@ -58,7 +58,20 @@ type signInInput struct { // Структура для sign in юзера
 	Password string `json:"password" binding:"required"` // Пароль
 }
 
-func (h *Handler) singIn(c *gin.Context) { // Метод обработчик для Авторизации
+// SignIn godoc
+// @Summary		SignIn
+// @Description	create account
+// @Tags			auth
+// @ID				login
+// @Accept			json
+// @Produce		json
+// @Param			input	body		signInInput	true	"username & password"
+// @Success		200		{string}	string		"token"
+// @Failure		400,404	{object}	errorResponse
+// @Failure		500		{object}	errorResponse
+// @Failure		default	{object}	errorResponse
+// @Router			/auth/sign-in [post]
+func (h *Handler) signIn(c *gin.Context) { // Метод обработчик для Авторизации
 	var input signInInput // Объявляем пустую структуру signInInput
 
 	err := c.BindJSON(&input) // BindJSON принимает ссылку на объект в который мы хотим распарсить тело JSON
