@@ -92,7 +92,7 @@ func (r *TodoListPostgres) Update(userId, listId int, input todo.UpdateListInput
 }
 
 func (r *TodoListPostgres) Delete(userId, listId int) error { // Метод для удаления списка по его ID
-	query := fmt.Sprintf("DELETE FROM %s tl USING %s ul where tl.id = ul.list_id AND ul.user_id = $1 AND ul.list_id = $2", todoListTable, usersListsTable) // SQL для удаления списка пользователя по его id
+	query := fmt.Sprintf("DELETE FROM %s tl USING %s ul WHERE tl.id = ul.list_id AND ul.user_id = $1 AND ul.list_id = $2", todoListTable, usersListsTable) // SQL для удаления списка пользователя по его id
 
 	_, err := r.db.Exec(query, userId, listId) // Метод Exec для простого выполнения SQL запроса
 
