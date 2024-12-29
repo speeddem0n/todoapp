@@ -7,18 +7,19 @@ import (
 	todo "github.com/speeddem0n/todoapp"
 )
 
-// @Summary SignUp
-// @Tags auth
-// @Description create account
-// @ID create-account
-// @Accept json
-// @Produce json
-// @Param input body todo.User true "account info"
-// @Success 200 {integer} integer 1
-// @Failure 400,404 {object} errorResponse
-// @Failure 500 {object} errorResponse
-// @Failure default {object} errorResponse
-// @Router /auth/sign-up [post]
+// SignUp godoc
+// @Summary		SignUp
+// @Tags			auth
+// @Description	create account
+// @ID				create-account
+// @Accept			json
+// @Produce		json
+// @Param			input	body		todo.User	true	"account info"
+// @Success		200		{integer}	integer		1
+// @Failure		400,404	{object}	errorResponse
+// @Failure		500		{object}	errorResponse
+// @Failure		default	{object}	errorResponse
+// @Router			/auth/sign-up [post]
 func (h *Handler) singUp(c *gin.Context) { // Метод обработчик для Регистрации пользователей
 	var input todo.User
 
@@ -39,18 +40,19 @@ func (h *Handler) singUp(c *gin.Context) { // Метод обработчик д
 	})
 }
 
-// @Summary SignIn
-// @Tags auth
-// @Description login
-// @ID login
-// @Accept json
-// @Produce json
-// @Param input body signInInput true "username & password"
-// @Success 200 {string} string "token"
-// @Failure 400,404 {object} errorResponse
-// @Failure 500 {object} errorResponse
-// @Failure default {object} errorResponse
-// @Router /auth/sign-in [post]
+// SignIn godoc
+// @Summary		SignIn
+// @Description	create account
+// @Tags			auth
+// @ID				login
+// @Accept			json
+// @Produce		json
+// @Param			input	body		signInInput	true	"username & password"
+// @Success		200		{string}	string		"token"
+// @Failure		400,404	{object}	errorResponse
+// @Failure		500		{object}	errorResponse
+// @Failure		default	{object}	errorResponse
+// @Router			/auth/sign-in [post]
 type signInInput struct { // Структура для sign in юзера
 	Username string `json:"username" binding:"required"` // Имя пользователя
 	Password string `json:"password" binding:"required"` // Пароль
