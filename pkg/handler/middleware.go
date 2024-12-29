@@ -20,9 +20,14 @@ func (h *Handler) userIdentity(c *gin.Context) { // метод идентифи�
 		return
 	}
 
-	headerParts := strings.Split(header, " ") // Разделяем строку header по пробелам
-	if len(headerParts) != 2 {                // При корректном формате хедера strings.Split должен вернуть массив длинною в 2 элемента
+	headerParts := strings.Split(header, " ")                // Разделяем строку header по пробелам
+	if len(headerParts) != 2 || headerParts[0] != "Bearer" { // При корректном формате хедера strings.Split должен вернуть массив длинною в 2 элемента
 		newErrorResponse(c, http.StatusUnauthorized, "invalid auth header")
+		return
+	}
+
+	if headerParts[1] == "" {
+		newErrorResponse(c, http.StatusUnauthorized, "token is empty")
 		return
 	}
 
@@ -38,14 +43,12 @@ func (h *Handler) userIdentity(c *gin.Context) { // метод идентифи�
 func getUserId(c *gin.Context) (int, error) { // Функция для получения id пользователя
 	id, ok := c.Get(userCtx) // возвращает Id пользователя типа interface
 	if !ok {                 // проверяем существует ли id
-		newErrorResponse(c, http.StatusInternalServerError, "user id not found")
 		return 0, errors.New("user id not found")
 	}
 
 	idInt, ok := id.(int) // приводим id к типу int
 	if !ok {              // если приведение к типу int не удалось возвращаем ошибку
-		newErrorResponse(c, http.StatusInternalServerError, "user id is of invalid type")
-		return 0, errors.New("user id not found")
+		return 0, errors.New("user id is invalid type")
 	}
 
 	return idInt, nil

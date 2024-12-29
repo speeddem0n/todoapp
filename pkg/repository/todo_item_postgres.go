@@ -98,7 +98,7 @@ func (r *TodoItemPostgres) Update(userId, itemId int, input todo.UpdateItemInput
 	setQuery := strings.Join(setValues, ", ") // Соеденяем элементы setValues в одну строку через запятую
 
 	query := fmt.Sprintf(`UPDATE %s ti SET %s FROM %s li, %s ul
-	where ti.id = li.item_id AND li.list_id = ul.list_id AND ul.user_id = $%d 
+	WHERE ti.id = li.item_id AND li.list_id = ul.list_id AND ul.user_id = $%d 
 	AND ti.id =$%d`, todoItemsTable, setQuery, listsItemsTable, usersListsTable, argId, argId+1)
 	/* SQL запрос обновления в БД.
 	Пояснения для sprintf(1: таблица todo_lists, 2: строка setQuery со значениями которые нужно изменить,
@@ -113,7 +113,7 @@ func (r *TodoItemPostgres) Update(userId, itemId int, input todo.UpdateItemInput
 }
 
 func (r *TodoItemPostgres) Delete(userId, itemId int) error { // Метод для удаления эелемнта списка по его ID
-	query := fmt.Sprintf("DELETE FROM %s ti using %s li, %s ul where li.item_id = ti.id and ul.list_id = li.list_id and ti.id = $1 and ul.user_id = $2", todoItemsTable, listsItemsTable, usersListsTable) // SQL зарос для удаления эелемнта списка по его ID
+	query := fmt.Sprintf("DELETE FROM %s ti USING %s li, %s ul WHERE li.item_id = ti.id AND ul.list_id = li.list_id AND ti.id = $1 AND ul.user_id = $2", todoItemsTable, listsItemsTable, usersListsTable) // SQL зарос для удаления эелемнта списка по его ID
 
 	_, err := r.db.Exec(query, itemId, userId) // Метод Exec для простого выполнения SQL запроса
 
