@@ -40,19 +40,6 @@ func (h *Handler) signUp(c *gin.Context) { // Метод обработчик д
 	})
 }
 
-// SignIn godoc
-// @Summary		SignIn
-// @Description	create account
-// @Tags			auth
-// @ID				login
-// @Accept			json
-// @Produce		json
-// @Param			input	body		signInInput	true	"username & password"
-// @Success		200		{string}	string		"token"
-// @Failure		400,404	{object}	errorResponse
-// @Failure		500		{object}	errorResponse
-// @Failure		default	{object}	errorResponse
-// @Router			/auth/sign-in [post]
 type signInInput struct { // Структура для sign in юзера
 	Username string `json:"username" binding:"required"` // Имя пользователя
 	Password string `json:"password" binding:"required"` // Пароль
