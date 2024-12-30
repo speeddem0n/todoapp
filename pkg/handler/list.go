@@ -11,6 +11,7 @@ import (
 func (h *Handler) createList(c *gin.Context) { // Метод для создания списка возвращает id созданного списка и ошибку
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -21,7 +22,7 @@ func (h *Handler) createList(c *gin.Context) { // Метод для создан
 		return
 	}
 
-	id, err := h.services.TodoList.Create(userId, input) // вызываем метод Create для создания нового списка
+	id, err := h.services.TodoList.Create(userId, input) // Вызываем метод Create для создания нового списка
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -35,6 +36,7 @@ func (h *Handler) createList(c *gin.Context) { // Метод для создан
 func (h *Handler) getAllLists(c *gin.Context) { // Метод для возвращения всех списков "todo" конкретного пользователя (принимает id пользователя)
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -53,6 +55,7 @@ func (h *Handler) getAllLists(c *gin.Context) { // Метод для возвр�
 func (h *Handler) getListById(c *gin.Context) { // Метод для получения списка пользователя по его ID
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -75,6 +78,7 @@ func (h *Handler) getListById(c *gin.Context) { // Метод для получ�
 func (h *Handler) updateList(c *gin.Context) { // Метод для обновления списка по его id
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -99,12 +103,13 @@ func (h *Handler) updateList(c *gin.Context) { // Метод для обновл
 
 	c.JSON(http.StatusOK, statusResponse{
 		Status: "ok",
-	}) // Возващаем Структуру statusResponse и пишем в ней что все ok
+	}) // Возващаем Структуру statusResponse и пишем в ней status: ok
 }
 
 func (h *Handler) deleteList(c *gin.Context) { // Метод для удаления списка по его ID
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -123,6 +128,6 @@ func (h *Handler) deleteList(c *gin.Context) { // Метод для удален
 
 	c.JSON(http.StatusOK, statusResponse{
 		Status: "ok",
-	}) // Возващаем Структуру statusResponse и пишем в ней что все ok
+	}) // Возващаем Структуру statusResponse и пишем в ней status: ok
 
 }

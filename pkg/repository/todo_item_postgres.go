@@ -8,11 +8,11 @@ import (
 	todo "github.com/speeddem0n/todoapp"
 )
 
-type TodoItemPostgres struct { // TodoItemPostgres с полем подключения к BD
+type TodoItemPostgres struct { // TodoItemPostgres с полем подключения к БД
 	db *sqlx.DB
 }
 
-func NewTodoItemPostgres(db *sqlx.DB) *TodoItemPostgres { // инициалицируем новую структуру TodoItemPostgress которая принимает подключение в БД
+func NewTodoItemPostgres(db *sqlx.DB) *TodoItemPostgres { // Инициализируем новую структуру TodoItemPostgress которая принимает подключение к БД
 	return &TodoItemPostgres{db: db}
 }
 

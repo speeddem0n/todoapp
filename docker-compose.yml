@@ -1,0 +1,31 @@
+
+services:
+  todoapp:
+    build: ./
+    command: ./todoapp
+    ports:
+      - 4000:4000
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_PASSWORD=1235
+
+  db:
+    image: postgres:latest
+    volumes:
+    - ./.database/postgres/data/psqldat:/var/lib/postgresql/data
+    environment:
+        POSTGRES_USER: speeddem0n
+        POSTGRES_PASSWORD: 1235
+        POSTGRES_DB: todoapp
+    ports:
+      - 5436:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U speeddem0n -d todoapp" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
