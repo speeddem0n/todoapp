@@ -22,7 +22,7 @@ func (h *Handler) signUp(c *gin.Context) { // Метод обработчик д
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{ // Передаем id бользоваетля в случае успеха (gin.H тоже самое что map[string]interface{})
+	c.JSON(http.StatusOK, gin.H{ // Передаем id пользоваетеля в случае успеха (gin.H тоже самое что map[string]interface{})
 		"id": id,
 	})
 }
@@ -37,7 +37,7 @@ func (h *Handler) signIn(c *gin.Context) { // Метод обработчик д
 
 	err := c.BindJSON(&input) // BindJSON принимает ссылку на объект в который мы хотим распарсить тело JSON
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid input body") // Возвращается ошибка 400 (Не корректные данные в запросе от пользователя)
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body") // Возвращается ошибка 400 (Некорректные данные в запросе от пользователя)
 		return
 	}
 
@@ -47,7 +47,7 @@ func (h *Handler) signIn(c *gin.Context) { // Метод обработчик д
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{ // Передаем token пользоваетля в случае успеха (gin.H тоже самое что map[string]interface{})
+	c.JSON(http.StatusOK, gin.H{ // Передаем token пользоваетеля в случае успеха (gin.H тоже самое что map[string]interface{})
 		"token": token,
 	})
 }

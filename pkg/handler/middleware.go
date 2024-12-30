@@ -13,7 +13,7 @@ const (
 	userCtx             = "userId"
 )
 
-func (h *Handler) userIdentity(c *gin.Context) { // метод идентификации пользователя по jwt токену
+func (h *Handler) userIdentity(c *gin.Context) { // Метод идентификации пользователя по jwt токену
 	header := c.GetHeader(authorizationHeader) // Поулчаем header
 	if header == "" {                          // Проверяем что хедер не пустой
 		newErrorResponse(c, http.StatusUnauthorized, "empty auth header")
@@ -41,13 +41,13 @@ func (h *Handler) userIdentity(c *gin.Context) { // метод идентифи�
 }
 
 func getUserId(c *gin.Context) (int, error) { // Функция для получения id пользователя
-	id, ok := c.Get(userCtx) // возвращает Id пользователя типа interface
-	if !ok {                 // проверяем существует ли id
+	id, ok := c.Get(userCtx) // Возвращает Id пользователя типа interface
+	if !ok {                 // Проверяем существует ли id
 		return 0, errors.New("user id not found")
 	}
 
-	idInt, ok := id.(int) // приводим id к типу int
-	if !ok {              // если приведение к типу int не удалось возвращаем ошибку
+	idInt, ok := id.(int) // Приводим id к типу int
+	if !ok {              // Если приведение к типу int не удалось возвращаем ошибку
 		return 0, errors.New("user id is invalid type")
 	}
 
