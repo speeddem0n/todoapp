@@ -8,23 +8,9 @@ import (
 	todo "github.com/speeddem0n/todoapp"
 )
 
-// @Summary		Create todo item
-// @Security		ApiKeyAuth
-// @Tags			items
-// @Description	create todo item
-// @ID				create-item
-// @Accept			json
-// @Produce		json
-// @Param			input	body		todo.TodoItem	true	"item info"
-// @Success		200		{integer}	integer			1
-// @Failure		400,404	{object}	errorResponse
-// @Failure		500		{object}	errorResponse
-// @Failure		default	{object}	errorResponse
-// @Router			/api/lists/items [post]
 func (h *Handler) createItem(c *gin.Context) {
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -52,22 +38,9 @@ func (h *Handler) createItem(c *gin.Context) {
 	})
 }
 
-// @Summary		Get All Todo Items
-// @Security		ApiKeyAuth
-// @Tags			items
-// @Description	get all todo items
-// @ID				get-all-items
-// @Accept			json
-// @Produce		json
-// @Success		200		{object}	[]todo.TodoItem	TodoItems
-// @Failure		400,404	{object}	errorResponse
-// @Failure		500		{object}	errorResponse
-// @Failure		default	{object}	errorResponse
-// @Router			/api/lists/items [get]
 func (h *Handler) getAllItems(c *gin.Context) {
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -87,22 +60,9 @@ func (h *Handler) getAllItems(c *gin.Context) {
 
 }
 
-// @Summary		Get Todo Item By Id
-// @Security		ApiKeyAuth
-// @Tags			items
-// @Description	get todo item by id
-// @ID				get-item-by-id
-// @Accept			json
-// @Produce		json
-// @Success		200		{object}	todo.TodoItem
-// @Failure		400,404	{object}	errorResponse
-// @Failure		500		{object}	errorResponse
-// @Failure		default	{object}	errorResponse
-// @Router			/api/items/:id [get]
 func (h *Handler) getItemById(c *gin.Context) {
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -121,23 +81,9 @@ func (h *Handler) getItemById(c *gin.Context) {
 	c.JSON(http.StatusOK, item) // Записываем нужный элемент списка в тело ответа
 }
 
-// @Summary		Update Todo Item
-// @Security		ApiKeyAuth
-// @Tags			items
-// @Description	update todo item
-// @ID				update-item
-// @Accept			json
-// @Produce		json
-// @Param			input	body		todo.UpdateItemInput	true	"update item info"
-// @Success		200		{string}	string					"ok"
-// @Failure		400,404	{object}	errorResponse
-// @Failure		500		{object}	errorResponse
-// @Failure		default	{object}	errorResponse
-// @Router			/api/items/:id [put]
 func (h *Handler) updateItem(c *gin.Context) {
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -165,22 +111,9 @@ func (h *Handler) updateItem(c *gin.Context) {
 	}) // Возващаем Структуру statusResponse и пишем в ней что все ok
 }
 
-// @Summary		Delete Todo Item
-// @Security		ApiKeyAuth
-// @Tags			items
-// @Description	delete todo item
-// @ID				delete-item
-// @Accept			json
-// @Produce		json
-// @Success		200		{string}	string	"ok"
-// @Failure		400,404	{object}	errorResponse
-// @Failure		500		{object}	errorResponse
-// @Failure		default	{object}	errorResponse
-// @Router			/api/items/:id [delete]
 func (h *Handler) deleteItem(c *gin.Context) { // Метод обработчика для удаления эелемнта списка по его ID
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 

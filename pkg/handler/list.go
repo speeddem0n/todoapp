@@ -8,6 +8,7 @@ import (
 	todo "github.com/speeddem0n/todoapp"
 )
 
+<<<<<<< HEAD
 //	@Summary		Create todo List
 //	@Security		ApiKeyAuth
 //	@Tags			lists
@@ -21,10 +22,11 @@ import (
 //	@Failure		500		{object}	errorResponse
 //	@Failure		default	{object}	errorResponse
 //	@Router			/api/lists [post]
+=======
+>>>>>>> parent of 0ff99a0 (added test swagger version)
 func (h *Handler) createList(c *gin.Context) { // Метод для создания списка возвращает id созданного списка и ошибку
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -46,6 +48,7 @@ func (h *Handler) createList(c *gin.Context) { // Метод для создан
 	})
 }
 
+<<<<<<< HEAD
 //	@Summary		Get All Lists
 //	@Security		ApiKeyAuth
 //	@Tags			lists
@@ -58,10 +61,11 @@ func (h *Handler) createList(c *gin.Context) { // Метод для создан
 //	@Failure		500		{object}	errorResponse
 //	@Failure		default	{object}	errorResponse
 //	@Router			/api/lists [get]
+=======
+>>>>>>> parent of 0ff99a0 (added test swagger version)
 func (h *Handler) getAllLists(c *gin.Context) { // Метод для возвращения всех списков "todo" конкретного пользователя (принимает id пользователя)
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -77,6 +81,7 @@ func (h *Handler) getAllLists(c *gin.Context) { // Метод для возвр�
 
 }
 
+<<<<<<< HEAD
 //	@Summary		Get List By Id
 //	@Security		ApiKeyAuth
 //	@Tags			lists
@@ -89,10 +94,11 @@ func (h *Handler) getAllLists(c *gin.Context) { // Метод для возвр�
 //	@Failure		500		{object}	errorResponse
 //	@Failure		default	{object}	errorResponse
 //	@Router			/api/lists/:id [get]
+=======
+>>>>>>> parent of 0ff99a0 (added test swagger version)
 func (h *Handler) getListById(c *gin.Context) { // Метод для получения списка пользователя по его ID
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -112,6 +118,7 @@ func (h *Handler) getListById(c *gin.Context) { // Метод для получ�
 
 }
 
+<<<<<<< HEAD
 //	@Summary		Update List
 //	@Security		ApiKeyAuth
 //	@Tags			lists
@@ -125,10 +132,11 @@ func (h *Handler) getListById(c *gin.Context) { // Метод для получ�
 //	@Failure		500		{object}	errorResponse
 //	@Failure		default	{object}	errorResponse
 //	@Router			/api/lists/:id [put]
+=======
+>>>>>>> parent of 0ff99a0 (added test swagger version)
 func (h *Handler) updateList(c *gin.Context) { // Метод для обновления списка по его id
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -171,7 +179,6 @@ func (h *Handler) updateList(c *gin.Context) { // Метод для обновл
 func (h *Handler) deleteList(c *gin.Context) { // Метод для удаления списка по его ID
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
