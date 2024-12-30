@@ -77,7 +77,7 @@ func TestHandler_SignUp(t *testing.T) {
 			// Test server
 			r := gin.New()
 			gin.SetMode(gin.ReleaseMode)
-			r.POST("/sign-up", handler.singUp)
+			r.POST("/sign-up", handler.signUp)
 
 			// test request
 
@@ -155,7 +155,7 @@ func TestHandler_SingUp(t *testing.T) {
 
 			// Test server
 			r := gin.New()
-			r.POST("/sign-in", handler.singIn)
+			r.POST("/sign-in", handler.signIn)
 
 			// test request
 

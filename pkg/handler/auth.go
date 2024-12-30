@@ -7,7 +7,7 @@ import (
 	todo "github.com/speeddem0n/todoapp"
 )
 
-func (h *Handler) singUp(c *gin.Context) { // Метод обработчик для Регистрации пользователей
+func (h *Handler) signUp(c *gin.Context) { // Метод обработчик для Регистрации пользователей
 	var input todo.User
 
 	err := c.BindJSON(&input) // BindJSON принимает ссылку на объект в который мы хотим распарсить тело JSON
@@ -32,7 +32,7 @@ type signInInput struct { // Структура для sign in юзера
 	Password string `json:"password" binding:"required"` // Пароль
 }
 
-func (h *Handler) singIn(c *gin.Context) { // Метод обработчик для Авторизации
+func (h *Handler) signIn(c *gin.Context) { // Метод обработчик для Авторизации
 	var input signInInput // Объявляем пустую структуру signInInput
 
 	err := c.BindJSON(&input) // BindJSON принимает ссылку на объект в который мы хотим распарсить тело JSON
