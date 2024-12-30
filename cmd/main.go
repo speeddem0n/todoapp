@@ -9,7 +9,7 @@ import (
 
 	"github.com/joho/godotenv"   // godotenv для работы с .env файлами
 	_ "github.com/lib/pq"        // драйвер для работы с БД
-	"github.com/sirupsen/logrus" // Сторонний логер для логирования
+	"github.com/sirupsen/logrus" // logrus для логирования
 	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/pkg/handler"
 	"github.com/speeddem0n/todoapp/pkg/repository"
@@ -30,7 +30,7 @@ import (
 func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter)) // Задаем для логера формат json
 
-	err := intConfig() // Инициализируем конфиг функцией intConfig()
+	err := intConfig() // Инициализируем конфиг intConfig()
 	if err != nil {
 		logrus.Fatalf("error initialization config: %s", err.Error())
 	}
@@ -85,7 +85,7 @@ func main() {
 }
 
 func intConfig() error { // Функция для инициализации конфига
-	viper.AddConfigPath("configs") // Инициалицируем путь к дириктории в которой лежат config файлы
-	viper.SetConfigName("config")  // Инициалицируем имя config файла
+	viper.AddConfigPath("configs") // Инициализируем путь к дириктории в которой лежат config файлы
+	viper.SetConfigName("config")  // Инициализируем имя config файла
 	return viper.ReadInConfig()
 }

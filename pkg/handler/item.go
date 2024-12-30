@@ -4,13 +4,14 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gin-gonic/gin" // используется gin вместо стандартого net/http
+	"github.com/gin-gonic/gin" // используется gin web framework
 	todo "github.com/speeddem0n/todoapp"
 )
 
 func (h *Handler) createItem(c *gin.Context) {
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -27,7 +28,7 @@ func (h *Handler) createItem(c *gin.Context) {
 		return
 	}
 
-	id, err := h.services.TodoItem.Create(userId, listId, input) // вызываем метод Create для создания нового элемента списка
+	id, err := h.services.TodoItem.Create(userId, listId, input) // Вызываем метод Create для создания нового элемента списка
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -41,6 +42,7 @@ func (h *Handler) createItem(c *gin.Context) {
 func (h *Handler) getAllItems(c *gin.Context) {
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -63,6 +65,7 @@ func (h *Handler) getAllItems(c *gin.Context) {
 func (h *Handler) getItemById(c *gin.Context) {
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -84,6 +87,7 @@ func (h *Handler) getItemById(c *gin.Context) {
 func (h *Handler) updateItem(c *gin.Context) {
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -108,12 +112,13 @@ func (h *Handler) updateItem(c *gin.Context) {
 
 	c.JSON(http.StatusOK, statusResponse{
 		Status: "ok",
-	}) // Возващаем Структуру statusResponse и пишем в ней что все ok
+	}) // Возващаем Структуру statusResponse и пишем в ней что status: ok
 }
 
 func (h *Handler) deleteItem(c *gin.Context) { // Метод обработчика для удаления эелемнта списка по его ID
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -131,6 +136,6 @@ func (h *Handler) deleteItem(c *gin.Context) { // Метод обработчи�
 
 	c.JSON(http.StatusOK, statusResponse{
 		Status: "ok",
-	}) // Возващаем Структуру statusResponse и пишем в ней что все ok
+	}) // Возващаем Структуру statusResponse и пишем в ней что status: ok
 
 }

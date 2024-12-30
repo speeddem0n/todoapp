@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/gin-gonic/gin" // используется gin вместо стандартого net/http
+	"github.com/gin-gonic/gin" // используется gin web framework
 	"github.com/speeddem0n/todoapp/pkg/service"
 )
 
@@ -35,16 +35,16 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 			items := lists.Group(":id/items") // Группа элементов списка
 			{
-				items.POST("/", h.createItem) // Создать элемент списока
+				items.POST("/", h.createItem) // Создать элемент списка
 				items.GET("/", h.getAllItems) // Получить все элементы списка
 			}
 		}
 
 		items := api.Group("items") // Группа элементов списка
 		{
-			items.GET("/:id", h.getItemById)   // Получить список по Id
-			items.PUT("/:id", h.updateItem)    // Обновить список по Id
-			items.DELETE("/:id", h.deleteItem) // Удалить список по Id
+			items.GET("/:id", h.getItemById)   // Получить элемент списка по Id
+			items.PUT("/:id", h.updateItem)    // Обновить элемент списка по Id
+			items.DELETE("/:id", h.deleteItem) // Удалить элемент списка по Id
 		}
 	}
 
