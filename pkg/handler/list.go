@@ -8,22 +8,6 @@ import (
 	todo "github.com/speeddem0n/todoapp"
 )
 
-<<<<<<< HEAD
-//	@Summary		Create todo List
-//	@Security		ApiKeyAuth
-//	@Tags			lists
-//	@Description	create todo list
-//	@ID				create-list
-//	@Accept			json
-//	@Produce		json
-//	@Param			input	body		todo.TodoList	true	"list info"
-//	@Success		200		{integer}	integer			1
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/lists [post]
-=======
->>>>>>> parent of 0ff99a0 (added test swagger version)
 func (h *Handler) createList(c *gin.Context) { // Метод для создания списка возвращает id созданного списка и ошибку
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
@@ -48,21 +32,6 @@ func (h *Handler) createList(c *gin.Context) { // Метод для создан
 	})
 }
 
-<<<<<<< HEAD
-//	@Summary		Get All Lists
-//	@Security		ApiKeyAuth
-//	@Tags			lists
-//	@Description	get all todo lists
-//	@ID				get-all-lists
-//	@Accept			json
-//	@Produce		json
-//	@Success		200		{object}	getAllListsResponse
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/lists [get]
-=======
->>>>>>> parent of 0ff99a0 (added test swagger version)
 func (h *Handler) getAllLists(c *gin.Context) { // Метод для возвращения всех списков "todo" конкретного пользователя (принимает id пользователя)
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
@@ -81,21 +50,6 @@ func (h *Handler) getAllLists(c *gin.Context) { // Метод для возвр�
 
 }
 
-<<<<<<< HEAD
-//	@Summary		Get List By Id
-//	@Security		ApiKeyAuth
-//	@Tags			lists
-//	@Description	get todo list by id
-//	@ID				get-lists-by-id
-//	@Accept			json
-//	@Produce		json
-//	@Success		200		{object}	todo.TodoList
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/lists/:id [get]
-=======
->>>>>>> parent of 0ff99a0 (added test swagger version)
 func (h *Handler) getListById(c *gin.Context) { // Метод для получения списка пользователя по его ID
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
@@ -118,22 +72,6 @@ func (h *Handler) getListById(c *gin.Context) { // Метод для получ�
 
 }
 
-<<<<<<< HEAD
-//	@Summary		Update List
-//	@Security		ApiKeyAuth
-//	@Tags			lists
-//	@Description	update todo list
-//	@ID				update-list
-//	@Accept			json
-//	@Produce		json
-//	@Param			input	body		todo.UpdateListInput	true	"update list info"
-//	@Success		200		{string}	string					"ok"
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/lists/:id [put]
-=======
->>>>>>> parent of 0ff99a0 (added test swagger version)
 func (h *Handler) updateList(c *gin.Context) { // Метод для обновления списка по его id
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
@@ -164,18 +102,6 @@ func (h *Handler) updateList(c *gin.Context) { // Метод для обновл
 	}) // Возващаем Структуру statusResponse и пишем в ней что все ok
 }
 
-//	@Summary		Delete List
-//	@Security		ApiKeyAuth
-//	@Tags			lists
-//	@Description	delete todo list
-//	@ID				delete-list
-//	@Accept			json
-//	@Produce		json
-//	@Success		200		{string}	string	"ok"
-//	@Failure		400,404	{object}	errorResponse
-//	@Failure		500		{object}	errorResponse
-//	@Failure		default	{object}	errorResponse
-//	@Router			/api/lists/:id [delete]
 func (h *Handler) deleteList(c *gin.Context) { // Метод для удаления списка по его ID
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
