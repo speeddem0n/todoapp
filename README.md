@@ -9,13 +9,8 @@
 - Работа с БД осуществляется, используя библиотеку <a href="https://github.com/jmoiron/sqlx">sqlx</a>.
 - Регистрация и аутентификация реализована с помощью JWT <a href="https://github.com/golang-jwt/jwt">golang-jwt</a>.
 
+
 ### Для запуска приложения:
-
-```
-go build .\cmd\main.go && go run .\cmd\main.go
-```
-
-### Для запуска приложения c помощью docker-compose:
 
 ```
 docker-compose up --build todoapp && docker-compose up todoapp
@@ -27,4 +22,6 @@ docker-compose up --build todoapp && docker-compose up todoapp
 ```
 migrate -path ./schema -database 'postgres://yourdbusername:yourpassword@host:port/todoapp?sslmode=disable' up
 ```
-Замените yourdbusername, yourpassword, host, port нужными вам настройками
+Замените yourdbusername, yourpassword, host, port нужными вам параметрами
+
+Параметры подключения к базе данных находятся в .\configs\config.yml
