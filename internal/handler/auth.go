@@ -4,11 +4,11 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin" // используется gin web framework
-	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/internal/models"
 )
 
 func (h *Handler) signUp(c *gin.Context) { // Метод обработчик для Регистрации пользователей
-	var input todo.User
+	var input models.User
 
 	err := c.BindJSON(&input) // BindJSON принимает ссылку на объект в который мы хотим распарсить тело JSON
 	if err != nil {

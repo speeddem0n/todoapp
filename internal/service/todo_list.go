@@ -3,7 +3,6 @@ package service
 import (
 	"errors"
 
-	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/internal/models"
 	"github.com/speeddem0n/todoapp/internal/repository"
 )
@@ -16,15 +15,15 @@ func newTodoListService(repo repository.TodoList) *TodoListService { // Конс
 	return &TodoListService{repo: repo}
 }
 
-func (s *TodoListService) Create(userId int, list todo.TodoList) (int, error) { // Метод для создания списка возвращает id созданного списка и ошибку
+func (s *TodoListService) Create(userId int, list models.TodoList) (int, error) { // Метод для создания списка возвращает id созданного списка и ошибку
 	return s.repo.Create(userId, list) // Возвращает анологичный метод из репозитория
 }
 
-func (s *TodoListService) GetAll(userId int) ([]todo.TodoList, error) { // Метод для возвращения всех списков "todo" конкретного пользователя (принимает id пользователя)
+func (s *TodoListService) GetAll(userId int) ([]models.TodoList, error) { // Метод для возвращения всех списков "todo" конкретного пользователя (принимает id пользователя)
 	return s.repo.GetAll(userId) // Возвращает анологичный метод из репозитория
 }
 
-func (s *TodoListService) GetById(userId, listId int) (todo.TodoList, error) { // Метод для получения списка пользователя по его ID
+func (s *TodoListService) GetById(userId, listId int) (models.TodoList, error) { // Метод для получения списка пользователя по его ID
 	return s.repo.GetById(userId, listId) // Возвращает анологичный метод из репозитория
 }
 

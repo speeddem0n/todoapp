@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin" // используется gin вместо стандартого net/http
-	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/internal/models"
 )
 
 func (h *Handler) createList(c *gin.Context) { // Метод для создания списка возвращает id созданного списка и ошибку
@@ -15,7 +15,7 @@ func (h *Handler) createList(c *gin.Context) { // Метод для создан
 		return
 	}
 
-	var input todo.TodoList
+	var input models.TodoList
 	err = c.BindJSON(&input) // Считываем инпут пользователя в input
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -75,11 +75,6 @@ func (h *Handler) getListById(c *gin.Context) { // Метод для получ�
 
 }
 
-type UpdateListInput struct { // Структура для обновления списка list
-	Title       *string `json:"title"`
-	Description *string `json:"description"`
-}
-
 func (h *Handler) updateList(c *gin.Context) { // Метод для обновления списка по его id
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
@@ -93,7 +88,7 @@ func (h *Handler) updateList(c *gin.Context) { // Метод для обновл
 		return
 	}
 
-	var input UpdateListInput
+	var input models.UpdateListInput
 	err = c.BindJSON(&input) // Получаем инпут от пользователя и записываем его в структуру input todo.UpdateListInput
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())

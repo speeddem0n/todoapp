@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"testing"
 
-	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/internal/models"
 	"github.com/stretchr/testify/assert"
 	sqlmock "github.com/zhashkevych/go-sqlxmock"
@@ -21,7 +20,7 @@ func TestTodoListPostgres_Create(t *testing.T) {
 
 	type args struct {
 		userId int
-		list   todo.TodoList
+		list   models.TodoList
 	}
 
 	type mockBehavior func(input args, id int)
@@ -47,7 +46,7 @@ func TestTodoListPostgres_Create(t *testing.T) {
 			},
 			input: args{
 				userId: 1,
-				list: todo.TodoList{
+				list: models.TodoList{
 					Title:       "new title",
 					Description: "new description",
 				},
@@ -67,7 +66,7 @@ func TestTodoListPostgres_Create(t *testing.T) {
 			},
 			input: args{
 				userId: 1,
-				list: todo.TodoList{
+				list: models.TodoList{
 					Title:       "",
 					Description: "description",
 				},
@@ -107,7 +106,7 @@ func TestTodoListPostgres_GetAll(t *testing.T) {
 		name    string
 		mock    mockBehavior
 		userId  int
-		want    []todo.TodoList
+		want    []models.TodoList
 		wantErr bool
 	}{
 		{
@@ -122,7 +121,7 @@ func TestTodoListPostgres_GetAll(t *testing.T) {
 					WithArgs(userId).WillReturnRows(rows)
 			},
 			userId: 2,
-			want: []todo.TodoList{
+			want: []models.TodoList{
 				{Id: 1, Title: "title1", Description: "description1"},
 				{Id: 2, Title: "title2", Description: "description2"},
 				{Id: 3, Title: "title3", Description: "description3"},
@@ -176,7 +175,7 @@ func TestTodoListPostgres_GetById(t *testing.T) {
 		name    string
 		mock    mockBehavior
 		args    args
-		want    todo.TodoList
+		want    models.TodoList
 		wantErr bool
 	}{
 		{
@@ -192,7 +191,7 @@ func TestTodoListPostgres_GetById(t *testing.T) {
 				userId: 2,
 				listId: 2,
 			},
-			want: todo.TodoList{Id: 2, Title: "title1", Description: "description1"},
+			want: models.TodoList{Id: 2, Title: "title1", Description: "description1"},
 		},
 		{
 			name: "No Records",

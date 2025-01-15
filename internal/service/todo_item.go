@@ -3,7 +3,6 @@ package service
 import (
 	"errors"
 
-	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/internal/models"
 	"github.com/speeddem0n/todoapp/internal/repository"
 )
@@ -20,7 +19,7 @@ func newtodoItemService(repo repository.TodoItem, listRepo repository.TodoList) 
 	}
 }
 
-func (s *todoItemService) Create(userId, listId int, item todo.TodoItem) (int, error) { // Метод для создания "todo" элемента возвращает id созданного элемента и ошибку
+func (s *todoItemService) Create(userId, listId int, item models.TodoItem) (int, error) { // Метод для создания "todo" элемента возвращает id созданного элемента и ошибку
 	_, err := s.listRepo.GetById(userId, listId) //Используем метод GetById что убедится что такоей список существует для данного пользователя
 	if err != nil {
 		return 0, err
@@ -30,11 +29,11 @@ func (s *todoItemService) Create(userId, listId int, item todo.TodoItem) (int, e
 
 }
 
-func (s *todoItemService) GetAll(userId, listId int) ([]todo.TodoItem, error) { // Метод для возвращения всех элементов списка конкретного пользователя (принимает id пользователя и списка)
+func (s *todoItemService) GetAll(userId, listId int) ([]models.TodoItem, error) { // Метод для возвращения всех элементов списка конкретного пользователя (принимает id пользователя и списка)
 	return s.repo.GetAll(userId, listId) // Возвращает анологичный метод из репозитория
 }
 
-func (s *todoItemService) GetById(userId, itemId int) (todo.TodoItem, error) { // Метод для получения элемента списка по его ID
+func (s *todoItemService) GetById(userId, itemId int) (models.TodoItem, error) { // Метод для получения элемента списка по его ID
 	return s.repo.GetById(userId, itemId) // Возвращает анологичный метод из репозитория
 }
 

@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt" // пакет для работы с jwt token
-	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/internal/models"
 	"github.com/speeddem0n/todoapp/internal/repository"
 )
 
@@ -30,7 +30,7 @@ func NewAuthService(repo repository.Authorization) *AuthService { // Конст�
 	return &AuthService{repo: repo}
 }
 
-func (s *AuthService) CreateUser(user todo.User) (int, error) { // Метод CreateUser()
+func (s *AuthService) CreateUser(user models.User) (int, error) { // Метод CreateUser()
 	user.Password = generatePasswordHash(user.Password) // Хэшируем пароль пользователя
 
 	return s.repo.CreateUser(user)

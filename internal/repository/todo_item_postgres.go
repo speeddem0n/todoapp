@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/jmoiron/sqlx"
-	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/internal/models"
 )
 
@@ -17,7 +16,7 @@ func NewTodoItemPostgres(db *sqlx.DB) *TodoItemPostgres { // Инициализ�
 	return &TodoItemPostgres{db: db}
 }
 
-func (r *TodoItemPostgres) Create(listId int, item todo.TodoItem) (int, error) { // Метод для создания "todo" элемента возвращает id созданного элемента и ошибку
+func (r *TodoItemPostgres) Create(listId int, item models.TodoItem) (int, error) { // Метод для создания "todo" элемента возвращает id созданного элемента и ошибку
 	tx, err := r.db.Begin() // Начинаем SQL транзакцию
 	if err != nil {
 		return 0, err
@@ -43,8 +42,8 @@ func (r *TodoItemPostgres) Create(listId int, item todo.TodoItem) (int, error) {
 	return itemId, tx.Commit() // Commit() применяет изменения к базе данных и заканчивает транзакцию
 }
 
-func (r *TodoItemPostgres) GetAll(userId, listId int) ([]todo.TodoItem, error) { // Метод для возвращения всех элементов списка конкретного пользователя (принимает id пользователя и списка)
-	var items []todo.TodoItem // Слайс стурктур для записи ответа
+func (r *TodoItemPostgres) GetAll(userId, listId int) ([]models.TodoItem, error) { // Метод для возвращения всех элементов списка конкретного пользователя (принимает id пользователя и списка)
+	var items []models.TodoItem // Слайс стурктур для записи ответа
 	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti  
 	INNER JOIN %s li on li.item_id = ti.id 
 	INNER JOIN %s ul on ul.list_id = li.list_id
@@ -58,8 +57,8 @@ func (r *TodoItemPostgres) GetAll(userId, listId int) ([]todo.TodoItem, error) {
 	return items, nil // Возвращаем срез элементов
 }
 
-func (r *TodoItemPostgres) GetById(userId, itemId int) (todo.TodoItem, error) { // Метод для получения элемента списка по его ID
-	var item todo.TodoItem // Стурктура для записи ответа
+func (r *TodoItemPostgres) GetById(userId, itemId int) (models.TodoItem, error) { // Метод для получения элемента списка по его ID
+	var item models.TodoItem // Стурктура для записи ответа
 	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti  
 	INNER JOIN %s li on li.item_id = ti.id 
 	INNER JOIN %s ul on ul.list_id = li.list_id

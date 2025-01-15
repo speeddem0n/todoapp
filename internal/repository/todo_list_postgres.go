@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/jmoiron/sqlx"
-	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/internal/models"
 )
 
@@ -17,7 +16,7 @@ func NewTodoListPostgres(db *sqlx.DB) *TodoListPostgres { // инициалиц�
 	return &TodoListPostgres{db: db}
 }
 
-func (r *TodoListPostgres) Create(userId int, list todo.TodoList) (int, error) { // Метод для создания списка возвращает id созданного списка и ошибку
+func (r *TodoListPostgres) Create(userId int, list models.TodoList) (int, error) { // Метод для создания списка возвращает id созданного списка и ошибку
 	tx, err := r.db.Begin() // Begin() начинает sql транзакцию
 	if err != nil {
 		return 0, err
@@ -42,8 +41,8 @@ func (r *TodoListPostgres) Create(userId int, list todo.TodoList) (int, error) {
 	return id, tx.Commit() // Commit() применяет изменения к базе данных и заканчивает транзакцию
 }
 
-func (r *TodoListPostgres) GetAll(userId int) ([]todo.TodoList, error) { // Метод для возвращения всех списков "todo" конкретного пользователя (принимает id пользователя)
-	var lists []todo.TodoList // Пустой стайс для списков дел
+func (r *TodoListPostgres) GetAll(userId int) ([]models.TodoList, error) { // Метод для возвращения всех списков "todo" конкретного пользователя (принимает id пользователя)
+	var lists []models.TodoList // Пустой стайс для списков дел
 
 	query := fmt.Sprintf("SELECT todo_lists.id, todo_lists.title, todo_lists.description FROM %s INNER JOIN %s on todo_lists.id = users_list.list_id WHERE users_list.user_id = $1", todoListTable, usersListsTable) // SQL запрос для получения всех списков конкретного юзера
 
@@ -52,8 +51,8 @@ func (r *TodoListPostgres) GetAll(userId int) ([]todo.TodoList, error) { // Ме
 	return lists, err // Возвращаем списки и ошибку
 }
 
-func (r *TodoListPostgres) GetById(userId, listId int) (todo.TodoList, error) { // Метод для получения списка пользователя по его ID
-	var list todo.TodoList // переменная для последующей записи нужного списка
+func (r *TodoListPostgres) GetById(userId, listId int) (models.TodoList, error) { // Метод для получения списка пользователя по его ID
+	var list models.TodoList // переменная для последующей записи нужного списка
 
 	query := fmt.Sprintf("SELECT todo_lists.id, todo_lists.title, todo_lists.description FROM %s INNER JOIN %s on todo_lists.id = users_list.list_id WHERE users_list.user_id = $1 AND users_list.list_id = $2", todoListTable, usersListsTable) // SQL запрос для получения конкретного списка, конкретного юзера
 

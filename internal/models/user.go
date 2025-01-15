@@ -1,4 +1,4 @@
-package todo
+package models
 
 type User struct { // Структура для пользователя
 	Id       int    `json:"-" db:"id"`               // db тэг для базы данных

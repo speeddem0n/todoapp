@@ -5,7 +5,6 @@ import (
 	"errors"
 	"testing"
 
-	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/internal/models"
 	"github.com/stretchr/testify/assert"
 	sqlmock "github.com/zhashkevych/go-sqlxmock"
@@ -22,7 +21,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 
 	type args struct {
 		listId int
-		item   todo.TodoItem
+		item   models.TodoItem
 	}
 
 	type mockBehavior func(args args, id int)
@@ -38,7 +37,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 			name: "OK",
 			args: args{
 				listId: 1,
-				item: todo.TodoItem{
+				item: models.TodoItem{
 					Title:       "test title",
 					Description: "test Description",
 				},
@@ -59,7 +58,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 			name: "Empty Fields",
 			args: args{
 				listId: 1,
-				item: todo.TodoItem{
+				item: models.TodoItem{
 					Title:       "",
 					Description: "test Description",
 				},
@@ -78,7 +77,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 			name: "2nd insert error",
 			args: args{
 				listId: 1,
-				item: todo.TodoItem{
+				item: models.TodoItem{
 					Title:       "test title",
 					Description: "test Description",
 				},
@@ -131,7 +130,7 @@ func TestTodoItemPostgres_GetAll(t *testing.T) {
 		name    string
 		mock    func()
 		input   args
-		want    []todo.TodoItem
+		want    []models.TodoItem
 		wantErr bool
 	}{
 		{
@@ -149,7 +148,7 @@ func TestTodoItemPostgres_GetAll(t *testing.T) {
 				listId: 1,
 				userId: 1,
 			},
-			want: []todo.TodoItem{
+			want: []models.TodoItem{
 				{Id: 1, Title: "title1", Description: "description1", Done: true},
 				{Id: 2, Title: "title2", Description: "description2", Done: false},
 				{Id: 3, Title: "title3", Description: "description3", Done: false},
@@ -203,7 +202,7 @@ func TestTodoItemPostgres_GetById(t *testing.T) {
 		name    string
 		mock    func()
 		input   args
-		want    todo.TodoItem
+		want    models.TodoItem
 		wantErr bool
 	}{
 		{
@@ -218,7 +217,7 @@ func TestTodoItemPostgres_GetById(t *testing.T) {
 				listId: 1,
 				userId: 1,
 			},
-			want: todo.TodoItem{Id: 1, Title: "title1", Description: "description1", Done: true},
+			want: models.TodoItem{Id: 1, Title: "title1", Description: "description1", Done: true},
 		},
 		{
 			name: "No Records",

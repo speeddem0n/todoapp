@@ -3,7 +3,7 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/internal/models"
 )
 
 type errorResponse struct { // Структура для кастомной ошибки в формате json
@@ -15,7 +15,7 @@ type statusResponse struct { // Структура ответа обработч
 }
 
 type getAllListsResponse struct { // Структура для записи слайса списков что бы потом передать ее в тело ответа метода getAllLists()
-	Data []todo.TodoList `json:"data"`
+	Data []models.TodoList `json:"data"`
 }
 
 func newErrorResponse(c *gin.Context, statusCode int, message string) { // Функция для обработки http ошибок

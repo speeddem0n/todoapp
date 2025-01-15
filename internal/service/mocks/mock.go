@@ -13,7 +13,6 @@ import (
 	reflect "reflect"
 
 	"github.com/speeddem0n/todoapp/internal/models"
-	todoapp "github.com/speeddem0n/todoapp"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -42,7 +41,7 @@ func (m *MockAuthorization) EXPECT() *MockAuthorizationMockRecorder {
 }
 
 // CreateUser mocks base method.
-func (m *MockAuthorization) CreateUser(user todoapp.User) (int, error) {
+func (m *MockAuthorization) CreateUser(user models.User) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateUser", user)
 	ret0, _ := ret[0].(int)
@@ -111,7 +110,7 @@ func (m *MockTodoList) EXPECT() *MockTodoListMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockTodoList) Create(userId int, list todoapp.TodoList) (int, error) {
+func (m *MockTodoList) Create(userId int, list models.TodoList) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", userId, list)
 	ret0, _ := ret[0].(int)
@@ -140,10 +139,10 @@ func (mr *MockTodoListMockRecorder) Delete(userId, listId any) *gomock.Call {
 }
 
 // GetAll mocks base method.
-func (m *MockTodoList) GetAll(userId int) ([]todoapp.TodoList, error) {
+func (m *MockTodoList) GetAll(userId int) ([]models.TodoList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAll", userId)
-	ret0, _ := ret[0].([]todoapp.TodoList)
+	ret0, _ := ret[0].([]models.TodoList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -155,10 +154,10 @@ func (mr *MockTodoListMockRecorder) GetAll(userId any) *gomock.Call {
 }
 
 // GetById mocks base method.
-func (m *MockTodoList) GetById(userId, listId int) (todoapp.TodoList, error) {
+func (m *MockTodoList) GetById(userId, listId int) (models.TodoList, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetById", userId, listId)
-	ret0, _ := ret[0].(todoapp.TodoList)
+	ret0, _ := ret[0].(models.TodoList)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -208,7 +207,7 @@ func (m *MockTodoItem) EXPECT() *MockTodoItemMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockTodoItem) Create(userId, listId int, item todoapp.TodoItem) (int, error) {
+func (m *MockTodoItem) Create(userId, listId int, item models.TodoItem) (int, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", userId, listId, item)
 	ret0, _ := ret[0].(int)
@@ -237,10 +236,10 @@ func (mr *MockTodoItemMockRecorder) Delete(userId, itemId any) *gomock.Call {
 }
 
 // GetAll mocks base method.
-func (m *MockTodoItem) GetAll(userId, listId int) ([]todoapp.TodoItem, error) {
+func (m *MockTodoItem) GetAll(userId, listId int) ([]models.TodoItem, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetAll", userId, listId)
-	ret0, _ := ret[0].([]todoapp.TodoItem)
+	ret0, _ := ret[0].([]models.TodoItem)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -252,10 +251,10 @@ func (mr *MockTodoItemMockRecorder) GetAll(userId, listId any) *gomock.Call {
 }
 
 // GetById mocks base method.
-func (m *MockTodoItem) GetById(userId, itemId int) (todoapp.TodoItem, error) {
+func (m *MockTodoItem) GetById(userId, itemId int) (models.TodoItem, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetById", userId, itemId)
-	ret0, _ := ret[0].(todoapp.TodoItem)
+	ret0, _ := ret[0].(models.TodoItem)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

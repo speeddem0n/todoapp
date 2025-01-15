@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/internal/models"
 	"github.com/speeddem0n/todoapp/internal/service"
 	mock_service "github.com/speeddem0n/todoapp/internal/service/mocks"
 	"github.com/stretchr/testify/assert"
@@ -15,12 +15,12 @@ import (
 )
 
 func TestHandler_SignUp(t *testing.T) {
-	type mockBehavior func(s *mock_service.MockAuthorization, user todo.User)
+	type mockBehavior func(s *mock_service.MockAuthorization, user models.User)
 
 	testTable := []struct { // Тблица с тестовыми данными
 		name                string
 		inputBody           string
-		inputUser           todo.User
+		inputUser           models.User
 		mockBehavior        mockBehavior
 		expectedStatusCode  int
 		expectedRequestBody string
@@ -28,12 +28,12 @@ func TestHandler_SignUp(t *testing.T) {
 		{
 			name:      "ok",
 			inputBody: `{"name":"Test","username":"Test","password":"123"}`,
-			inputUser: todo.User{
+			inputUser: models.User{
 				Name:     "Test",
 				Username: "Test",
 				Password: "123",
 			},
-			mockBehavior: func(s *mock_service.MockAuthorization, user todo.User) {
+			mockBehavior: func(s *mock_service.MockAuthorization, user models.User) {
 				s.EXPECT().CreateUser(user).Return(1, nil)
 			},
 			expectedStatusCode:  200,
@@ -42,19 +42,19 @@ func TestHandler_SignUp(t *testing.T) {
 		{
 			name:                "Wrong Input",
 			inputBody:           `{"username":"Test","password":"123"}`,
-			mockBehavior:        func(s *mock_service.MockAuthorization, user todo.User) {},
+			mockBehavior:        func(s *mock_service.MockAuthorization, user models.User) {},
 			expectedStatusCode:  400,
 			expectedRequestBody: `{"message":"invalid input body"}`,
 		},
 		{
 			name:      "Servise Error",
 			inputBody: `{"name":"tt","username":"Test","password":"123"}`,
-			inputUser: todo.User{
+			inputUser: models.User{
 				Name:     "tt",
 				Username: "Test",
 				Password: "123",
 			},
-			mockBehavior: func(s *mock_service.MockAuthorization, user todo.User) {
+			mockBehavior: func(s *mock_service.MockAuthorization, user models.User) {
 				s.EXPECT().CreateUser(user).Return(1, errors.New("something went wrong"))
 			},
 			expectedStatusCode:  500,
