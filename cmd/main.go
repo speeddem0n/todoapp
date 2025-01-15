@@ -7,15 +7,27 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/joho/godotenv"   // godotenv для работы с .env файлами
-	_ "github.com/lib/pq"        // драйвер для работы с БД
+	"github.com/jmoiron/sqlx"
+	"github.com/joho/godotenv" // godotenv для работы с .env файлами
+	_ "github.com/lib/pq"      // драйвер для работы с БД
+	"github.com/pressly/goose"
 	"github.com/sirupsen/logrus" // logrus для логирования
-	todo "github.com/speeddem0n/todoapp"
-	"github.com/speeddem0n/todoapp/pkg/handler"
-	"github.com/speeddem0n/todoapp/pkg/repository"
-	"github.com/speeddem0n/todoapp/pkg/service"
+	"github.com/speeddem0n/todoapp/internal/handler"
+	"github.com/speeddem0n/todoapp/internal/repository"
+	"github.com/speeddem0n/todoapp/internal/server"
+	"github.com/speeddem0n/todoapp/internal/service"
 	"github.com/spf13/viper" // viper для работы с config файлами
 )
+
+func runMigrations(db *sqlx.DB) {
+	migrationsDir := "./internal/repository/migrations" // Путь к папке с миграциями
+
+	logrus.Info("Running database migrations...")
+	if err := goose.Up(db.DB, migrationsDir); err != nil {
+		logrus.Fatalf("Failed to apply migrations: %v", err)
+	}
+	logrus.Info("Database migrations applied successfully.")
+}
 
 // @title TodoAppApi
 // @version 1.0
@@ -52,12 +64,15 @@ func main() {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
 
+	// Запускаем миграции при старте приложения
+	runMigrations(db)
+
 	repos := repository.NewRepository(db)    // Ицициализируем структуру БД (4 УРОВЕНЬ)
 	services := service.NewService(repos)    // Инициализируем структуру сервисов и передаем в нее структуру БД (3 УРОВЕНЬ)
 	handlers := handler.NewHandler(services) // Инициализируем структуру обработчиков и передаем в нее структуру сервисов (2 УРОВЕНЬ)
 
-	srv := new(todo.Server) // Инициализируеми структуру сервера
-	go func() {             // Запускаем сервер в отдельной горутине
+	srv := new(server.Server) // Инициализируеми структуру сервера
+	go func() {               // Запускаем сервер в отдельной горутине
 		err = srv.Run(viper.GetString("port"), handlers.InitRoutes()) // viper.GetString(port) получает значения port из config. Запускаем сервер на указаном порте.
 		if err != nil && err != http.ErrServerClosed {
 			logrus.Fatalf("Ошибка во времая запуска серевера: %s", err.Error()) // Обработка ошибки запуска сервера
@@ -85,7 +100,7 @@ func main() {
 }
 
 func intConfig() error { // Функция для инициализации конфига
-	viper.AddConfigPath("configs") // Инициализируем путь к дириктории в которой лежат config файлы
-	viper.SetConfigName("config")  // Инициализируем имя config файла
+	viper.AddConfigPath("internal/configs") // Инициализируем путь к дириктории в которой лежат config файлы
+	viper.SetConfigName("config")           // Инициализируем имя config файла
 	return viper.ReadInConfig()
 }
