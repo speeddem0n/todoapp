@@ -29,11 +29,11 @@ func runMigrations(db *sqlx.DB) {
 	logrus.Info("Database migration applied successfully.")
 }
 
-// @title TodoAppApi
+// @title Todo App API
 // @version 1.0
 // @description API Server for TodoList Application
 
-// @host localhost:4000
+// @host localhost:8000
 // @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth
