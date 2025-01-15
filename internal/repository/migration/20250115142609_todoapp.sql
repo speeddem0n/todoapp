@@ -1,3 +1,5 @@
+-- +goose Up
+-- +goose StatementBegin
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -29,3 +31,17 @@ CREATE TABLE lists_items (
     item_id int REFERENCES todo_items (id) on DELETE CASCADE NOT NULL,
     list_id int REFERENCES todo_lists (id) on DELETE CASCADE NOT NULL
 );
+-- +goose StatementEnd
+
+-- +goose Down
+-- +goose StatementBegin
+DROP TABLE IS EXISTS lists_items;
+
+DROP TABLE IS EXISTS users_list;
+
+DROP TABLE IS EXISTS todo_lists;
+
+DROP TABLE IS EXISTS users;
+
+DROP TABLE IS EXISTS todo_items;
+-- +goose StatementEnd

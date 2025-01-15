@@ -85,7 +85,7 @@ func main() {
 }
 
 func intConfig() error { // Функция для инициализации конфига
-	viper.AddConfigPath("configs") // Инициализируем путь к дириктории в которой лежат config файлы
-	viper.SetConfigName("config")  // Инициализируем имя config файла
+	viper.AddConfigPath("internal/configs") // Инициализируем путь к дириктории в которой лежат config файлы
+	viper.SetConfigName("config")           // Инициализируем имя config файла
 	return viper.ReadInConfig()
 }
