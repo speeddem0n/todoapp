@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	todo "github.com/speeddem0n/todoapp"
-	"github.com/speeddem0n/todoapp/pkg/repository"
+	"github.com/speeddem0n/todoapp/internal/repository"
 )
 
 type TodoListService struct { // Структура TodoListService в которой находится соответствующий интерфейс из репозитория

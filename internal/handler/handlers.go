@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin" // используется gin web framework
-	"github.com/speeddem0n/todoapp/pkg/service"
+	"github.com/speeddem0n/todoapp/internal/service"
 )
 
 type Handler struct { // Структура handler

@@ -8,8 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	todo "github.com/speeddem0n/todoapp"
-	"github.com/speeddem0n/todoapp/pkg/service"
-	mock_service "github.com/speeddem0n/todoapp/pkg/service/mocks"
+	"github.com/speeddem0n/todoapp/internal/service"
+	mock_service "github.com/speeddem0n/todoapp/internal/service/mocks"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 )

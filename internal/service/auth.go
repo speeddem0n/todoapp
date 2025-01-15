@@ -8,7 +8,7 @@ import (
 
 	"github.com/golang-jwt/jwt" // пакет для работы с jwt token
 	todo "github.com/speeddem0n/todoapp"
-	"github.com/speeddem0n/todoapp/pkg/repository"
+	"github.com/speeddem0n/todoapp/internal/repository"
 )
 
 const (

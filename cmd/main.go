@@ -11,9 +11,9 @@ import (
 	_ "github.com/lib/pq"        // драйвер для работы с БД
 	"github.com/sirupsen/logrus" // logrus для логирования
 	todo "github.com/speeddem0n/todoapp"
-	"github.com/speeddem0n/todoapp/pkg/handler"
-	"github.com/speeddem0n/todoapp/pkg/repository"
-	"github.com/speeddem0n/todoapp/pkg/service"
+	"github.com/speeddem0n/todoapp/internal/handler"
+	"github.com/speeddem0n/todoapp/internal/repository"
+	"github.com/speeddem0n/todoapp/internal/service"
 	"github.com/spf13/viper" // viper для работы с config файлами
 )
 
