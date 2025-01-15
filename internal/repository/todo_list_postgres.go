@@ -6,6 +6,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/internal/models"
 )
 
 type TodoListPostgres struct {
@@ -61,7 +62,7 @@ func (r *TodoListPostgres) GetById(userId, listId int) (todo.TodoList, error) { 
 	return list, err // Возвращаем списки и ошибку
 }
 
-func (r *TodoListPostgres) Update(userId, listId int, input todo.UpdateListInput) error { // Метод для обновления списка по его id
+func (r *TodoListPostgres) Update(userId, listId int, input models.UpdateListInput) error { // Метод для обновления списка по его id
 	setValues := make([]string, 0) // Слайс строк
 	args := make([]interface{}, 0) // Слайс interface
 	argId := 1                     // Id аргументов

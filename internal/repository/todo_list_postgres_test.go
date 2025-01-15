@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/internal/models"
 	"github.com/stretchr/testify/assert"
 	sqlmock "github.com/zhashkevych/go-sqlxmock"
 )
@@ -312,10 +313,10 @@ func TestTodoListPostgres_Update(t *testing.T) {
 	type args struct {
 		listId    int
 		userId    int
-		userInput todo.UpdateListInput
+		userInput models.UpdateListInput
 	}
 
-	type mockBehavior func(userId, listId int, input todo.UpdateListInput)
+	type mockBehavior func(userId, listId int, input models.UpdateListInput)
 
 	tests := []struct {
 		name    string
@@ -325,14 +326,14 @@ func TestTodoListPostgres_Update(t *testing.T) {
 	}{
 		{
 			name: "OK_ALL_FIELDS",
-			mock: func(userId, listId int, input todo.UpdateListInput) {
+			mock: func(userId, listId int, input models.UpdateListInput) {
 				mock.ExpectExec("UPDATE todo_lists tl SET (.+) FROM users_list ul WHERE (.+)").
 					WithArgs(input.Title, input.Description, userId, listId).WillReturnResult(sqlmock.NewResult(0, 1))
 			},
 			input: args{
 				listId: 1,
 				userId: 1,
-				userInput: todo.UpdateListInput{
+				userInput: models.UpdateListInput{
 					Title:       stringPointer("new title"),
 					Description: stringPointer("new description"),
 				},
@@ -340,35 +341,35 @@ func TestTodoListPostgres_Update(t *testing.T) {
 		},
 		{
 			name: "OK_WithoutDescription",
-			mock: func(userId, listId int, input todo.UpdateListInput) {
+			mock: func(userId, listId int, input models.UpdateListInput) {
 				mock.ExpectExec("UPDATE todo_lists tl SET (.+) FROM users_list ul WHERE (.+)").
 					WithArgs(input.Title, userId, listId).WillReturnResult(sqlmock.NewResult(0, 1))
 			},
 			input: args{
 				listId: 1,
 				userId: 1,
-				userInput: todo.UpdateListInput{
+				userInput: models.UpdateListInput{
 					Title: stringPointer("new title"),
 				},
 			},
 		},
 		{
 			name: "OK_WithoutTItle",
-			mock: func(userId, listId int, input todo.UpdateListInput) {
+			mock: func(userId, listId int, input models.UpdateListInput) {
 				mock.ExpectExec("UPDATE todo_lists tl SET (.+) FROM users_list ul WHERE (.+)").
 					WithArgs(input.Description, userId, listId).WillReturnResult(sqlmock.NewResult(0, 1))
 			},
 			input: args{
 				listId: 1,
 				userId: 1,
-				userInput: todo.UpdateListInput{
+				userInput: models.UpdateListInput{
 					Description: stringPointer("new description"),
 				},
 			},
 		},
 		{
 			name: "OK_NoInputFields",
-			mock: func(userId, listId int, input todo.UpdateListInput) {
+			mock: func(userId, listId int, input models.UpdateListInput) {
 				mock.ExpectExec("UPDATE todo_lists tl SET FROM users_list ul WHERE (.+)").
 					WithArgs(userId, listId).WillReturnResult(sqlmock.NewResult(0, 1))
 			},

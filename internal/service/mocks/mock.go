@@ -12,6 +12,7 @@ package mock_service
 import (
 	reflect "reflect"
 
+	"github.com/speeddem0n/todoapp/internal/models"
 	todoapp "github.com/speeddem0n/todoapp"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -169,7 +170,7 @@ func (mr *MockTodoListMockRecorder) GetById(userId, listId any) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockTodoList) Update(userId, listId int, input todoapp.UpdateListInput) error {
+func (m *MockTodoList) Update(userId, listId int, input  models.UpdateListInput) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", userId, listId, input)
 	ret0, _ := ret[0].(error)
@@ -266,7 +267,7 @@ func (mr *MockTodoItemMockRecorder) GetById(userId, itemId any) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockTodoItem) Update(userId, itemId int, input todoapp.UpdateItemInput) error {
+func (m *MockTodoItem) Update(userId, itemId int, input models.UpdateItemInput) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", userId, itemId, input)
 	ret0, _ := ret[0].(error)

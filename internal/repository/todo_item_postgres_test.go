@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/internal/models"
 	"github.com/stretchr/testify/assert"
 	sqlmock "github.com/zhashkevych/go-sqlxmock"
 )
@@ -323,7 +324,7 @@ func TestTodoItemPostgres_Update(t *testing.T) {
 	type args struct {
 		itemId int
 		userId int
-		input  todo.UpdateItemInput
+		input  models.UpdateItemInput
 	}
 
 	tests := []struct {
@@ -341,7 +342,7 @@ func TestTodoItemPostgres_Update(t *testing.T) {
 			input: args{
 				itemId: 1,
 				userId: 1,
-				input: todo.UpdateItemInput{
+				input: models.UpdateItemInput{
 					Title:       stringPointer("new title"),
 					Description: stringPointer("new description"),
 					Done:        boolPointer(true),
@@ -357,7 +358,7 @@ func TestTodoItemPostgres_Update(t *testing.T) {
 			input: args{
 				itemId: 1,
 				userId: 1,
-				input: todo.UpdateItemInput{
+				input: models.UpdateItemInput{
 					Title:       stringPointer("new title"),
 					Description: stringPointer("new description"),
 				},
@@ -372,7 +373,7 @@ func TestTodoItemPostgres_Update(t *testing.T) {
 			input: args{
 				itemId: 1,
 				userId: 1,
-				input: todo.UpdateItemInput{
+				input: models.UpdateItemInput{
 					Title: stringPointer("new title"),
 				},
 			},

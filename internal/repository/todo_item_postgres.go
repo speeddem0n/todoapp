@@ -6,6 +6,7 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/internal/models"
 )
 
 type TodoItemPostgres struct { // TodoItemPostgres с полем подключения к БД
@@ -72,7 +73,7 @@ func (r *TodoItemPostgres) GetById(userId, itemId int) (todo.TodoItem, error) { 
 	return item, nil // Возвращаем полученный элемент
 }
 
-func (r *TodoItemPostgres) Update(userId, itemId int, input todo.UpdateItemInput) error { // Метод для обновления элемента списка по его id
+func (r *TodoItemPostgres) Update(userId, itemId int, input models.UpdateItemInput) error { // Метод для обновления элемента списка по его id
 	setValues := make([]string, 0) // Слайс строк
 	args := make([]interface{}, 0) // Слайс interface
 	argId := 1                     // Id аргументов

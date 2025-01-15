@@ -10,9 +10,9 @@ import (
 	"github.com/joho/godotenv"   // godotenv для работы с .env файлами
 	_ "github.com/lib/pq"        // драйвер для работы с БД
 	"github.com/sirupsen/logrus" // logrus для логирования
-	todo "github.com/speeddem0n/todoapp"
 	"github.com/speeddem0n/todoapp/internal/handler"
 	"github.com/speeddem0n/todoapp/internal/repository"
+	"github.com/speeddem0n/todoapp/internal/server"
 	"github.com/speeddem0n/todoapp/internal/service"
 	"github.com/spf13/viper" // viper для работы с config файлами
 )
@@ -56,8 +56,8 @@ func main() {
 	services := service.NewService(repos)    // Инициализируем структуру сервисов и передаем в нее структуру БД (3 УРОВЕНЬ)
 	handlers := handler.NewHandler(services) // Инициализируем структуру обработчиков и передаем в нее структуру сервисов (2 УРОВЕНЬ)
 
-	srv := new(todo.Server) // Инициализируеми структуру сервера
-	go func() {             // Запускаем сервер в отдельной горутине
+	srv := new(server.Server) // Инициализируеми структуру сервера
+	go func() {               // Запускаем сервер в отдельной горутине
 		err = srv.Run(viper.GetString("port"), handlers.InitRoutes()) // viper.GetString(port) получает значения port из config. Запускаем сервер на указаном порте.
 		if err != nil && err != http.ErrServerClosed {
 			logrus.Fatalf("Ошибка во времая запуска серевера: %s", err.Error()) // Обработка ошибки запуска сервера

@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/internal/models"
 	"github.com/speeddem0n/todoapp/internal/repository"
 )
 
@@ -27,7 +28,7 @@ func (s *TodoListService) GetById(userId, listId int) (todo.TodoList, error) { /
 	return s.repo.GetById(userId, listId) // Возвращает анологичный метод из репозитория
 }
 
-func (s *TodoListService) Update(userId, listId int, input todo.UpdateListInput) error { // Метод для обновления списка по его id
+func (s *TodoListService) Update(userId, listId int, input models.UpdateListInput) error { // Метод для обновления списка по его id
 	_, err := s.repo.GetById(userId, listId) //Используем метод GerById что убедится что такоей список существует для данного пользователя
 	if err != nil {
 		return errors.New("list doesn't exist")

@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin" // используется gin web framework
 	todo "github.com/speeddem0n/todoapp"
+	"github.com/speeddem0n/todoapp/internal/models"
 )
 
 func (h *Handler) createItem(c *gin.Context) {
@@ -97,7 +98,7 @@ func (h *Handler) updateItem(c *gin.Context) {
 		return
 	}
 
-	var input todo.UpdateItemInput
+	var input models.UpdateItemInput
 	err = c.BindJSON(&input) // Получаем инпут от пользователя и записываем его в структуру input todo.UpdateListInput
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())

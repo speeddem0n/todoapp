@@ -75,6 +75,11 @@ func (h *Handler) getListById(c *gin.Context) { // Метод для получ�
 
 }
 
+type UpdateListInput struct { // Структура для обновления списка list
+	Title       *string `json:"title"`
+	Description *string `json:"description"`
+}
+
 func (h *Handler) updateList(c *gin.Context) { // Метод для обновления списка по его id
 	userId, err := getUserId(c) // Обращаемся к функции getUserId из middleware для получения id пользователя
 	if err != nil {
@@ -88,7 +93,7 @@ func (h *Handler) updateList(c *gin.Context) { // Метод для обновл
 		return
 	}
 
-	var input todo.UpdateListInput
+	var input UpdateListInput
 	err = c.BindJSON(&input) // Получаем инпут от пользователя и записываем его в структуру input todo.UpdateListInput
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
