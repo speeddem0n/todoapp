@@ -20,13 +20,13 @@ import (
 )
 
 func runMigrations(db *sqlx.DB) {
-	migrationsDir := "./internal/repository/migrations" // Путь к папке с миграциями
+	migrationsDir := "./internal/repository/migration" // Путь к папке с миграциями
 
 	logrus.Info("Running database migrations...")
 	if err := goose.Up(db.DB, migrationsDir); err != nil {
 		logrus.Fatalf("Failed to apply migrations: %v", err)
 	}
-	logrus.Info("Database migrations applied successfully.")
+	logrus.Info("Database migration applied successfully.")
 }
 
 // @title TodoAppApi
