@@ -9,7 +9,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      - DB_PASSWORD=1235
+      - DB_PASSWORD=postgres
 
   db:
     image: postgres:latest
