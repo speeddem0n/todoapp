@@ -21,7 +21,7 @@
 
 1. Создайте файл .env в корневой директории проекта и укажите следующие параметры:
 ```dotenv
-DB_PASSWORD = postgres
+DB_PASSWORD=postgres
 ```
 2. При необходимости изменить настройки приложения в файле internal/configs/config.yml
 
