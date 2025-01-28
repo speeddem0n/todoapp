@@ -21,7 +21,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 
 	type args struct {
 		listId int
-		item   models.TodoItem
+		item   models.CreateTodoItemInp
 	}
 
 	type mockBehavior func(args args, id int)
@@ -37,7 +37,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 			name: "OK",
 			args: args{
 				listId: 1,
-				item: models.TodoItem{
+				item: models.CreateTodoItemInp{
 					Title:       "test title",
 					Description: "test Description",
 				},
@@ -58,7 +58,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 			name: "Empty Fields",
 			args: args{
 				listId: 1,
-				item: models.TodoItem{
+				item: models.CreateTodoItemInp{
 					Title:       "",
 					Description: "test Description",
 				},
@@ -77,7 +77,7 @@ func TestTodoItemPostgres_Create(t *testing.T) {
 			name: "2nd insert error",
 			args: args{
 				listId: 1,
-				item: models.TodoItem{
+				item: models.CreateTodoItemInp{
 					Title:       "test title",
 					Description: "test Description",
 				},

@@ -19,7 +19,7 @@ func newtodoItemService(repo repository.TodoItem, listRepo repository.TodoList) 
 	}
 }
 
-func (s *todoItemService) Create(userId, listId int, item models.TodoItem) (int, error) { // Метод для создания "todo" элемента возвращает id созданного элемента и ошибку
+func (s *todoItemService) Create(userId, listId int, item models.CreateTodoItemInp) (int, error) { // Метод для создания "todo" элемента возвращает id созданного элемента и ошибку
 	_, err := s.listRepo.GetById(userId, listId) //Используем метод GetById что убедится что такоей список существует для данного пользователя
 	if err != nil {
 		return 0, err

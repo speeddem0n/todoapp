@@ -2,7 +2,10 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin" // используется gin web framework
+	_ "github.com/speeddem0n/todoapp/docs"
 	"github.com/speeddem0n/todoapp/internal/service"
+	swaggerFiles "github.com/swaggo/files"     // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
 
 type Handler struct { // Структура handler
@@ -16,6 +19,8 @@ func NewHandler(services *service.Service) *Handler { // Инициализир�
 func (h *Handler) InitRoutes() *gin.Engine {
 	gin.SetMode(gin.ReleaseMode) // Устанавлевает ReleaseMod Для запуска сервера
 	router := gin.New()          // Инициализация роутера
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	auth := router.Group("/auth") // Группа авторизации
 	{
@@ -40,7 +45,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			}
 		}
 
-		items := api.Group("items") // Группа элементов списка
+		items := api.Group("/items") // Группа элементов списка
 		{
 			items.GET("/:id", h.getItemById)   // Получить элемент списка по Id
 			items.PUT("/:id", h.updateItem)    // Обновить элемент списка по Id

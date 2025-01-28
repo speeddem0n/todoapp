@@ -20,7 +20,7 @@ func TestTodoListPostgres_Create(t *testing.T) {
 
 	type args struct {
 		userId int
-		list   models.TodoList
+		list   models.CreateListInput
 	}
 
 	type mockBehavior func(input args, id int)
@@ -46,7 +46,7 @@ func TestTodoListPostgres_Create(t *testing.T) {
 			},
 			input: args{
 				userId: 1,
-				list: models.TodoList{
+				list: models.CreateListInput{
 					Title:       "new title",
 					Description: "new description",
 				},
@@ -66,7 +66,7 @@ func TestTodoListPostgres_Create(t *testing.T) {
 			},
 			input: args{
 				userId: 1,
-				list: models.TodoList{
+				list: models.CreateListInput{
 					Title:       "",
 					Description: "description",
 				},

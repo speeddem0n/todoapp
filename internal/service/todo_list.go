@@ -15,7 +15,7 @@ func newTodoListService(repo repository.TodoList) *TodoListService { // Конс
 	return &TodoListService{repo: repo}
 }
 
-func (s *TodoListService) Create(userId int, list models.TodoList) (int, error) { // Метод для создания списка возвращает id созданного списка и ошибку
+func (s *TodoListService) Create(userId int, list models.CreateListInput) (int, error) { // Метод для создания списка возвращает id созданного списка и ошибку
 	return s.repo.Create(userId, list) // Возвращает анологичный метод из репозитория
 }
 
