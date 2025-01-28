@@ -7,6 +7,17 @@ import (
 	"github.com/speeddem0n/todoapp/internal/models"
 )
 
+// @Summary SignUp
+// @Tags auth
+// @Description Create new account
+// @Accept  json
+// @Produce  json
+// @Param input body models.User true "Account info"
+// @Success 200 {integer} integer userId
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /auth/sign-up [post]
 func (h *Handler) signUp(c *gin.Context) { // Метод обработчик для Регистрации пользователей
 	var input models.User
 
@@ -32,6 +43,17 @@ type signInInput struct { // Структура для sign in юзера
 	Password string `json:"password" binding:"required"` // Пароль
 }
 
+// @Summary SignIn
+// @Tags auth
+// @Description login
+// @Accept  json
+// @Produce  json
+// @Param input body signInInput true "username and passwor"
+// @Success 200 {string} string "token"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /auth/sign-in [post]
 func (h *Handler) signIn(c *gin.Context) { // Метод обработчик для Авторизации
 	var input signInInput // Объявляем пустую структуру signInInput
 

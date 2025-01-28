@@ -7,10 +7,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/jmoiron/sqlx"
-	"github.com/joho/godotenv" // godotenv для работы с .env файлами
-	_ "github.com/lib/pq"      // драйвер для работы с БД
-	"github.com/pressly/goose"
+	"github.com/joho/godotenv"   // godotenv для работы с .env файлами
+	_ "github.com/lib/pq"        // драйвер для работы с БД
 	"github.com/sirupsen/logrus" // logrus для логирования
 	"github.com/speeddem0n/todoapp/internal/handler"
 	"github.com/speeddem0n/todoapp/internal/repository"
@@ -19,21 +17,11 @@ import (
 	"github.com/spf13/viper" // viper для работы с config файлами
 )
 
-func runMigrations(db *sqlx.DB) {
-	migrationsDir := "./internal/repository/migration" // Путь к папке с миграциями
-
-	logrus.Info("Running database migrations...")
-	if err := goose.Up(db.DB, migrationsDir); err != nil {
-		logrus.Fatalf("Failed to apply migrations: %v", err)
-	}
-	logrus.Info("Database migration applied successfully.")
-}
-
-// @title TodoAppApi
+// @title Todo App API
 // @version 1.0
 // @description API Server for TodoList Application
 
-// @host localhost:4000
+// @host localhost:8000
 // @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth
@@ -63,9 +51,6 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
-
-	// Запускаем миграции при старте приложения
-	runMigrations(db)
 
 	repos := repository.NewRepository(db)    // Ицициализируем структуру БД (4 УРОВЕНЬ)
 	services := service.NewService(repos)    // Инициализируем структуру сервисов и передаем в нее структуру БД (3 УРОВЕНЬ)

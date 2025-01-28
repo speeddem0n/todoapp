@@ -16,7 +16,7 @@ func NewTodoListPostgres(db *sqlx.DB) *TodoListPostgres { // инициалиц�
 	return &TodoListPostgres{db: db}
 }
 
-func (r *TodoListPostgres) Create(userId int, list models.TodoList) (int, error) { // Метод для создания списка возвращает id созданного списка и ошибку
+func (r *TodoListPostgres) Create(userId int, list models.CreateListInput) (int, error) { // Метод для создания списка возвращает id созданного списка и ошибку
 	tx, err := r.db.Begin() // Begin() начинает sql транзакцию
 	if err != nil {
 		return 0, err
