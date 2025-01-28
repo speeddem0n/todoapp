@@ -45,7 +45,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			}
 		}
 
-		items := api.Group("items") // Группа элементов списка
+		items := api.Group("/items") // Группа элементов списка
 		{
 			items.GET("/:id", h.getItemById)   // Получить элемент списка по Id
 			items.PUT("/:id", h.updateItem)    // Обновить элемент списка по Id

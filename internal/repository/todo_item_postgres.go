@@ -16,7 +16,7 @@ func NewTodoItemPostgres(db *sqlx.DB) *TodoItemPostgres { // Инициализ�
 	return &TodoItemPostgres{db: db}
 }
 
-func (r *TodoItemPostgres) Create(listId int, item models.TodoItem) (int, error) { // Метод для создания "todo" элемента возвращает id созданного элемента и ошибку
+func (r *TodoItemPostgres) Create(listId int, item models.CreateTodoItemInp) (int, error) { // Метод для создания "todo" элемента возвращает id созданного элемента и ошибку
 	tx, err := r.db.Begin() // Начинаем SQL транзакцию
 	if err != nil {
 		return 0, err

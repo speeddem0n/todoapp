@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -14,8 +15,8 @@ import (
 // @Description Create new todo list
 // @Accept  json
 // @Produce  json
-// @Param input body models.TodoList true "list info"
-// @Success 200 {integer} integer listID
+// @Param input body models.CreateListInput true "list info"
+// @Success 201 {integer} integer listID
 // @Failure 400,404 {object} errorResponse
 // @Failure 500 {object} errorResponse
 // @Failure default {object} errorResponse
@@ -27,20 +28,20 @@ func (h *Handler) createList(c *gin.Context) {
 		return
 	}
 
-	var input models.TodoList
+	var input models.CreateListInput
 	err = c.BindJSON(&input) // Считываем инпут пользователя в input
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, fmt.Sprintf("invalit input: %v", err))
 		return
 	}
 
 	id, err := h.services.TodoList.Create(userId, input) // Вызываем метод Create для создания нового списка
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("error on creating list: %v", err))
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{ // В ответ возвращаем id только что созданного списка (gin.H тоже самое что map[string]interface{})
+	c.JSON(http.StatusCreated, gin.H{ // В ответ возвращаем id только что созданного списка (gin.H тоже самое что map[string]interface{})
 		"id": id,
 	})
 }
@@ -65,7 +66,7 @@ func (h *Handler) getAllLists(c *gin.Context) {
 
 	lists, err := h.services.TodoList.GetAll(userId) // Вызывает метод GetALL из сервисов для получения всех списков пользоваетля
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("error on getting lists: %v", err))
 		return
 	}
 
@@ -96,13 +97,13 @@ func (h *Handler) getListById(c *gin.Context) {
 
 	listId, err := strconv.Atoi(c.Param("id")) // достаем id из URL param
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		newErrorResponse(c, http.StatusBadRequest, fmt.Sprintf("error on getting list id: %v", err))
 		return
 	}
 
 	list, err := h.services.TodoList.GetById(userId, listId) // Вызывает метод GetById из сервисов для получения списка по его id
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("error on getting list by id: %d, %v", listId, err))
 		return
 	}
 
@@ -116,6 +117,7 @@ func (h *Handler) getListById(c *gin.Context) {
 // @Description Update list using listID
 // @Accept  json
 // @Produce  json
+// @Param input body models.UpdateListInput true "Update Input"
 // @Param id path int true "list ID"
 // @Success 200 {string} string "status"
 // @Failure 400,404 {object} errorResponse
@@ -131,20 +133,20 @@ func (h *Handler) updateList(c *gin.Context) {
 
 	listId, err := strconv.Atoi(c.Param("id")) // достаем id из URL param
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		newErrorResponse(c, http.StatusBadRequest, fmt.Sprintf("error on getting list id: %v", err))
 		return
 	}
 
 	var input models.UpdateListInput
 	err = c.BindJSON(&input) // Получаем инпут от пользователя и записываем его в структуру input todo.UpdateListInput
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		newErrorResponse(c, http.StatusBadRequest, fmt.Sprintf("invalit input: %v", err))
 		return
 	}
 
 	err = h.services.TodoList.Update(userId, listId, input) // Вызывает метод Delete из сервисов для обновления списка по listID
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("error on updating list by id: %d, %v", listId, err))
 		return
 	}
 
@@ -174,14 +176,14 @@ func (h *Handler) deleteList(c *gin.Context) {
 
 	listId, err := strconv.Atoi(c.Param("id")) // достаем id из URL param
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id param")
+		newErrorResponse(c, http.StatusBadRequest, fmt.Sprintf("invalit input: %v", err))
 		return
 
 	}
 
 	err = h.services.TodoList.Delete(userId, listId) // Вызывает метод Delete из сервисов для удаления списка по listID
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		newErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("error on deliting item by id: %d, %v", listId, err))
 		return
 	}
 
