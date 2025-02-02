@@ -35,13 +35,13 @@ CREATE TABLE lists_items (
 
 -- +goose Down
 -- +goose StatementBegin
-DROP TABLE IS EXISTS lists_items;
+DROP TABLE IF EXISTS lists_items;
 
-DROP TABLE IS EXISTS users_list;
+DROP TABLE IF EXISTS users_list;
 
-DROP TABLE IS EXISTS todo_lists;
+DROP TABLE IF EXISTS todo_lists;
 
-DROP TABLE IS EXISTS users;
+DROP TABLE IF EXISTS users;
 
-DROP TABLE IS EXISTS todo_items;
+DROP TABLE IF EXISTS todo_items;
 -- +goose StatementEnd

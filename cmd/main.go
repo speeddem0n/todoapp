@@ -6,13 +6,15 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
-	"github.com/joho/godotenv"   // godotenv для работы с .env файлами
+	// godotenv для работы с .env файлами
 	_ "github.com/lib/pq"        // драйвер для работы с БД
 	"github.com/sirupsen/logrus" // logrus для логирования
+	config "github.com/speeddem0n/todoapp/internal/configs"
+	"github.com/speeddem0n/todoapp/internal/connections"
 	"github.com/speeddem0n/todoapp/internal/handler"
 	"github.com/speeddem0n/todoapp/internal/repository"
-	"github.com/speeddem0n/todoapp/internal/server"
 	"github.com/speeddem0n/todoapp/internal/service"
 	"github.com/spf13/viper" // viper для работы с config файлами
 )
@@ -28,64 +30,54 @@ import (
 // @in header
 // @name Authorization
 func main() {
-	logrus.SetFormatter(new(logrus.JSONFormatter)) // Задаем для логера формат json
-
-	err := intConfig() // Инициализируем конфиг intConfig()
+	// Инициализируем конфиг
+	err := config.InitConfig()
 	if err != nil {
 		logrus.Fatalf("error initialization config: %s", err.Error())
 	}
 
-	err = godotenv.Load() // Загружаем .env файл с паролем к бд
-	if err != nil {
-		logrus.Fatalf("error loading env variables: %s", err.Error())
-	}
-
-	db, err := repository.NewPostgresDB(repository.Config{ // Инициализируем новое подключение к базе данных и передаем в него параметры из конфига с помощью viper
-		Host:     viper.GetString("db.host"),     // Адрес хост БД
-		Port:     viper.GetString("db.port"),     // Порт БД
-		Username: viper.GetString("db.username"), // username БД
-		DBName:   viper.GetString("db.dbname"),   // Название БД
-		SSLMode:  viper.GetString("db.sslmode"),  // SSLmode
-		Password: os.Getenv("DB_PASSWORD"),       // Передаем пароль из .env с помощью godotenv
-	})
+	// Инициализируем подключение к базе данных
+	db, err := connections.NewPostgresConnection()
 	if err != nil {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
+	defer db.Close()
 
-	repos := repository.NewRepository(db)    // Ицициализируем структуру БД (4 УРОВЕНЬ)
-	services := service.NewService(repos)    // Инициализируем структуру сервисов и передаем в нее структуру БД (3 УРОВЕНЬ)
-	handlers := handler.NewHandler(services) // Инициализируем структуру обработчиков и передаем в нее структуру сервисов (2 УРОВЕНЬ)
+	repos := repository.NewRepository(db)    // Ицициализируем структуру БД
+	services := service.NewService(repos)    // Инициализируем структуру сервисов и передаем в нее структуру БД
+	handlers := handler.NewHandler(services) // Инициализируем структуру обработчиков и передаем в нее структуру сервисов
 
-	srv := new(server.Server) // Инициализируеми структуру сервера
-	go func() {               // Запускаем сервер в отдельной горутине
-		err = srv.Run(viper.GetString("port"), handlers.InitRoutes()) // viper.GetString(port) получает значения port из config. Запускаем сервер на указаном порте.
-		if err != nil && err != http.ErrServerClosed {
-			logrus.Fatalf("Ошибка во времая запуска серевера: %s", err.Error()) // Обработка ошибки запуска сервера
+	// Инициализируем структуру сервера
+	srv := http.Server{
+		Addr:           ":" + viper.GetString("port"),
+		Handler:        handlers.InitRoutes(),
+		MaxHeaderBytes: 1 << 20, // 1 MB
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+	}
+
+	// Запускаем сервер в отдельной горутине
+	go func() {
+		logrus.Infof("Starting server on %s", srv.Addr)
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			logrus.WithError(err).Fatal("Server stopped")
 		}
 	}()
+	logrus.Info("TodoApp is Running")
 
-	logrus.Print("TodoApp is Running")
-
-	quit := make(chan os.Signal, 1)                      // Создаем канал типа os.Signal с емкостью 1
+	// Реализация Graceful shutdown
+	quit := make(chan os.Signal, 1)                      // Создаем канал типа os.Signal
 	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT) // SIGTERM - Termination signal, SIGINT - Terminal interrupt signal
 	<-quit                                               // Канал считает системный сигнал
 
-	logrus.Print("TodoApp Shutting Down")
+	logrus.Print("TodoApp Shutting Down...")
 
-	err = srv.Shutdown(context.Background()) // Вызываем метод Shutdown для выключения сервера
+	ctx, ctxCancel := context.WithTimeout(context.Background(), 15*time.Second)
+	defer ctxCancel()
+
+	err = srv.Shutdown(ctx)
 	if err != nil {
 		logrus.Errorf("Error occured on server shutting down: %s", err.Error())
 	}
 
-	err = db.Close() // Закрываем подключение к бд
-	if err != nil {
-		logrus.Errorf("Error occured on db connection close: %s", err.Error())
-	}
-
-}
-
-func intConfig() error { // Функция для инициализации конфига
-	viper.AddConfigPath("internal/configs") // Инициализируем путь к дириктории в которой лежат config файлы
-	viper.SetConfigName("config")           // Инициализируем имя config файла
-	return viper.ReadInConfig()
 }
