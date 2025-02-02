@@ -1,8 +1,18 @@
 port: "8000"
 
-db:
+postgres:
   username: "postgres"
-  host: "db"
+  host: "postgres_db"
   port: "5432"
   dbname: "todoapp"
   sslmode: disable
+
+redis:
+  host: "redis_db"
+  username: "todoapp"
+  dbname: 0
+  retries: 5
+  dialtimout: 10
+  timeout: 5
+  
+

@@ -12,12 +12,12 @@ func NewPostgresConnection() (*sqlx.DB, error) {
 
 	// Считываем настройки для подключения к БД из конфига
 	db, err := sqlx.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		viper.GetString("db.host"),
-		viper.GetString("db.port"),
-		viper.GetString("db.username"),
-		os.Getenv("DB_PASSWORD"),
-		viper.GetString("db.dbname"),
-		viper.GetString("db.sslmode"),
+		viper.GetString("postgres.host"),
+		viper.GetString("postgres.port"),
+		viper.GetString("postgres.username"),
+		os.Getenv("POSTGRES_PASSWORD"),
+		viper.GetString("postgres.dbname"),
+		viper.GetString("postgres.sslmode"),
 	))
 
 	if err != nil {

@@ -11,7 +11,7 @@ services:
     environment:
       - DB_PASSWORD=postgres
 
-  db:
+  postgres_db:
     image: postgres:latest
     volumes:
     - ./.database/postgres/data/psqldat:/var/lib/postgresql/data
@@ -29,3 +29,9 @@ services:
     restart: unless-stopped
     tty: true
     stdin_open: true
+
+  redis_db:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379

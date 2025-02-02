@@ -37,15 +37,21 @@ func main() {
 	}
 
 	// Инициализируем подключение к базе данных
-	db, err := connections.NewPostgresConnection()
+	postgresDB, err := connections.NewPostgresConnection()
 	if err != nil {
-		logrus.Fatalf("failed to initialize db: %s", err.Error())
+		logrus.Fatalf("failed to initialize postgres connection: %s", err.Error())
 	}
-	defer db.Close()
+	defer postgresDB.Close()
 
-	repos := repository.NewRepository(db)    // Ицициализируем структуру БД
-	services := service.NewService(repos)    // Инициализируем структуру сервисов и передаем в нее структуру БД
-	handlers := handler.NewHandler(services) // Инициализируем структуру обработчиков и передаем в нее структуру сервисов
+	redisDB, err := connections.NewRedisConnection()
+	if err != nil {
+		logrus.Fatalf("failed to initialize redis connection: %s", err.Error())
+	}
+	defer redisDB.Close()
+
+	repos := repository.NewRepository(postgresDB) // Ицициализируем структуру БД
+	services := service.NewService(repos)         // Инициализируем структуру сервисов и передаем в нее структуру БД
+	handlers := handler.NewHandler(services)      // Инициализируем структуру обработчиков и передаем в нее структуру сервисов
 
 	// Инициализируем структуру сервера
 	srv := http.Server{
