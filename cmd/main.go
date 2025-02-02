@@ -49,7 +49,7 @@ func main() {
 
 	// Инициализируем структуру сервера
 	srv := http.Server{
-		Addr:           "localhost:" + viper.GetString("port"),
+		Addr:           ":" + viper.GetString("port"),
 		Handler:        handlers.InitRoutes(),
 		MaxHeaderBytes: 1 << 20, // 1 MB
 		ReadTimeout:    10 * time.Second,
@@ -63,7 +63,7 @@ func main() {
 			logrus.WithError(err).Fatal("Server stopped")
 		}
 	}()
-	logrus.Print("TodoApp is Running")
+	logrus.Info("TodoApp is Running")
 
 	// Реализация Graceful shutdown
 	quit := make(chan os.Signal, 1)                      // Создаем канал типа os.Signal

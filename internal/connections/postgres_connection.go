@@ -17,7 +17,7 @@ func NewPostgresConnection() (*sqlx.DB, error) {
 		viper.GetString("db.username"),
 		os.Getenv("DB_PASSWORD"),
 		viper.GetString("db.dbname"),
-		viper.GetString("db.dbname"),
+		viper.GetString("db.sslmode"),
 	))
 
 	if err != nil {

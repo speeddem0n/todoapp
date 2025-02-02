@@ -8,8 +8,8 @@ import (
 
 // Функция для инициализации конфига
 func initViperConfig() error {
-	viper.AddConfigPath("internal/configs") // Инициализируем путь к дириктории в которой лежат config файлы
-	viper.SetConfigName("config")           // Инициализируем имя config файла
+	viper.AddConfigPath("internal/configs/config") // Инициализируем путь к дириктории в которой лежат config файлы
+	viper.SetConfigName("config")                  // Инициализируем имя config файла
 	return viper.ReadInConfig()
 }
 
