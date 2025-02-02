@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin" // используется gin web framework
@@ -23,13 +24,13 @@ func (h *Handler) signUp(c *gin.Context) { // Метод обработчик д
 
 	err := c.BindJSON(&input) // BindJSON принимает ссылку на объект в который мы хотим распарсить тело JSON
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid input body") // Возвращается ошибка 400 (Не корректные данные в запросе от пользователя)
+		newErrorResponse(c, http.StatusBadRequest, "invalid input") // Возвращается ошибка 400 (Не корректные данные в запросе от пользователя)
 		return
 	}
 
 	id, err := h.services.Authorization.CreateUser(input) // Вызываем из сервисов метод для создания пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error()) // В случае ошибки возвращаем код InternalServerError
+		newErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("failed to sign in: %v", err)) // В случае ошибки возвращаем код InternalServerError
 		return
 	}
 
@@ -59,13 +60,13 @@ func (h *Handler) signIn(c *gin.Context) { // Метод обработчик д
 
 	err := c.BindJSON(&input) // BindJSON принимает ссылку на объект в который мы хотим распарсить тело JSON
 	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid input body") // Возвращается ошибка 400 (Некорректные данные в запросе от пользователя)
+		newErrorResponse(c, http.StatusBadRequest, "invalid input") // Возвращается ошибка 400 (Некорректные данные в запросе от пользователя)
 		return
 	}
 
 	token, err := h.services.Authorization.GenerateToken(input.Username, input.Password) // Вызываем из сервисов метод для получения JWT токена пользователя
 	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error()) // В случае ошибки возвращаем код InternalServerError
+		newErrorResponse(c, http.StatusInternalServerError, fmt.Sprintf("failed to sign ip: %v", err)) // В случае ошибки возвращаем код InternalServerError
 		return
 	}
 

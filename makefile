@@ -13,11 +13,11 @@ down: ## Stop all services.
 test: ## Launch all unit tests.
 	go test -v ./...
 
-migarateup: ## Up migrations
-	goose postgres -dir "scripts/migrations/migration" "host=localhost port=5439 user=postgres database=todoapp password=postgres sslmode=disable" up
+migrateup: ## Up migrations
+	/home/speeddem0n/work/bin/goose postgres -dir "scripts/migrations/migration" "host=localhost port=5439 user=postgres database=todoapp password=postgres sslmode=disable" up
 
 migratedown: ## Down migrations
-	goose postgres -dir "scripts/migrations/migration" "host=localhost port=5439 user=postgres database=todoapp password=postgres sslmode=disable" down
+	/home/speeddem0n/work/bin/goose postgres -dir "scripts/migrations/migration" "host=localhost port=5439 user=postgres database=todoapp password=postgres sslmode=disable" down
 
 swag: ## Generate swagger docs
 	swag init -d cmd/,internal/handler/,internal/models/ --output ./docs --parseInternal
