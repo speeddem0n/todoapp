@@ -11,6 +11,14 @@ import (
 
 // Инициализация Redis
 func NewRedisConnection() (*redis.Client, error) {
+	var (
+		DialTimeout  time.Duration
+		ReadTimeout  time.Duration
+		WriteTimeout time.Duration
+	)
+
+	DialTimeout = (time.Second * viper.GetInt("redis.dialtimeout"))
+
 	rdb := redis.NewClient(&redis.Options{
 		Addr:         viper.GetString("redis.host"), // Адрес Redis
 		Password:     os.Getenv("REDIS_PASSWORD"),   // Пароль, если есть
@@ -18,7 +26,7 @@ func NewRedisConnection() (*redis.Client, error) {
 		Username:     viper.GetString("redis.username"),
 		MaxRetries:   viper.GetInt("redis.retries"),
 		DialTimeout:  time.Second * viper.GetInt("redis.dialtimeout"),
-		ReadTimeout:  time.Second * viper.GetInt("redis.timeout"),
+		ReadTimeout:  viper.GetInt("redis.timeout") * time.Second(),
 		WriteTimeout: time.Second * viper.GetInt("redis.timeout"),
 	})
 
